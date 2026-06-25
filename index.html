@@ -1576,6 +1576,11 @@
         return;
       }
 
+      if (!window.isSecureContext) {
+        state.notificationStatus = "unsupported";
+        return;
+      }
+
       try {
         const supported = await isSupported();
         if (!supported) {
@@ -1593,6 +1598,38 @@
         console.error(error);
         state.notificationStatus = "unsupported";
       }
+    }
+
+    function getNotificationActivationErrorMessage(error) {
+      const code = error?.code || "";
+      const message = error?.message || "";
+      const details = `${code} ${message}`.toLowerCase();
+
+      if (!window.isSecureContext) {
+        return "Abra pelo link HTTPS da Vercel para ativar as notificações.";
+      }
+
+      if (Notification.permission === "denied" || details.includes("permission-blocked")) {
+        return "A permissão de notificações está bloqueada neste navegador.";
+      }
+
+      if (details.includes("unsupported-browser")) {
+        return "Este navegador não aceita notificações web neste modo.";
+      }
+
+      if (details.includes("invalid-vapid-key")) {
+        return "A chave VAPID não foi aceita pelo Firebase. Copie a chave pública Web Push de novo.";
+      }
+
+      if (details.includes("token-subscribe-failed") || details.includes("push service")) {
+        return "O navegador não conseguiu criar o token. Teste pelo Chrome ou pelo app instalado na tela inicial.";
+      }
+
+      if (details.includes("serviceworker") || details.includes("service worker")) {
+        return "O service worker da notificação não carregou. Atualize a página e tente de novo.";
+      }
+
+      return `Não foi possível ativar as notificações: ${code || message || "erro desconhecido"}.`;
     }
 
     // Funções do fluxo principal
@@ -2506,6 +2543,11 @@
       }
 
       try {
+        if (!window.isSecureContext) {
+          showToast("Abra pelo link HTTPS da Vercel para ativar as notificações.");
+          return;
+        }
+
         const permission = await Notification.requestPermission();
         if (permission !== "granted") {
           state.notificationStatus = "denied";
@@ -2514,11 +2556,16 @@
           return;
         }
 
-        const registration = await navigator.serviceWorker.register("/firebase-messaging-sw.js");
+        const registration = await navigator.serviceWorker.register("/firebase-messaging-sw.js", { scope: "/" });
+        await registration.update();
         const token = await getToken(messaging, {
           vapidKey: FIREBASE_VAPID_KEY,
           serviceWorkerRegistration: registration
         });
+
+        if (!token) {
+          throw new Error("O Firebase não retornou um token de notificação.");
+        }
 
         await setDoc(doc(db, "ownerNotificationTokens", auth.currentUser.uid), {
           uid: auth.currentUser.uid,
@@ -2534,8 +2581,8 @@
         renderAdminSettings();
         showToast("Notificações ativadas neste aparelho.");
       } catch (error) {
-        console.error(error);
-        showToast("Não foi possível ativar as notificações. Confira a chave VAPID e o HTTPS.");
+        console.error("Erro ao ativar notificações:", error);
+        showToast(getNotificationActivationErrorMessage(error));
       }
     }
 
