@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nail Agenda, agendamento para manicures</title>
   <meta name="description" content="Sistema elegante de agendamento online para manicures, com calendário, horários disponíveis e painel de gestão.">
+  <meta name="theme-color" content="#b85f67">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/icon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -845,9 +848,22 @@
       border: 1px solid rgba(255, 230, 222, 0.2);
       border-radius: 0.75rem;
       background: rgba(255, 255, 255, 0.08);
+      transition: background 180ms ease, border 180ms ease, transform 180ms ease;
+    }
+
+    .panel-menu button.active,
+    .panel-menu button:hover {
+      border-color: rgba(255, 236, 230, 0.72);
+      background: rgba(255, 255, 255, 0.16);
+      transform: translateY(-1px);
     }
 
     .panel-content {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .panel-section {
       display: grid;
       gap: 1rem;
     }
@@ -964,6 +980,34 @@
       border: 1px solid rgba(185, 111, 98, 0.18);
       border-radius: 0.6rem;
       background: #fff;
+    }
+
+    .client-cards,
+    .settings-grid {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .client-mini-card,
+    .setting-card {
+      display: grid;
+      gap: 0.55rem;
+      padding: 1rem;
+      border: 1px solid rgba(185, 111, 98, 0.14);
+      border-radius: 1rem;
+      background: #fffaf7;
+    }
+
+    .client-mini-card header {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .client-mini-card strong,
+    .setting-card strong {
+      color: #321d1a;
     }
 
     .modal {
@@ -1215,10 +1259,10 @@
               <p class="logo-sub" style="color: #ffd6ce;">Agenda</p>
             </div>
             <nav class="panel-menu" aria-label="Menu do painel">
-              <button type="button"><i data-lucide="layout-dashboard"></i> Visão geral</button>
-              <button type="button"><i data-lucide="calendar-days"></i> Agendamentos</button>
-              <button type="button"><i data-lucide="users-round"></i> Clientes</button>
-              <button type="button"><i data-lucide="settings"></i> Ajustes</button>
+              <button class="active" type="button" data-admin-section="overview"><i data-lucide="layout-dashboard"></i> Visão geral</button>
+              <button type="button" data-admin-section="appointments"><i data-lucide="calendar-days"></i> Agendamentos</button>
+              <button type="button" data-admin-section="clients"><i data-lucide="users-round"></i> Clientes</button>
+              <button type="button" data-admin-section="settings"><i data-lucide="settings"></i> Ajustes</button>
             </nav>
             <button class="button button-ghost" id="adminLogoutButton" type="button" style="color: #fff;">
               <i data-lucide="log-out"></i>
@@ -1238,9 +1282,20 @@
               </button>
             </section>
 
-            <section class="metrics-grid" id="metricsGrid"></section>
+            <section class="panel-section" id="overviewSection">
+              <section class="metrics-grid" id="metricsGrid"></section>
+              <section class="card panel-tools">
+                <div class="step-header">
+                  <div>
+                    <h2 style="margin: 0; font-family: 'Playfair Display', Georgia, serif;">Resumo do dia</h2>
+                    <p class="muted" style="margin: 0.25rem 0 0;">Os próximos horários de hoje aparecem aqui para você acompanhar com calma.</p>
+                  </div>
+                </div>
+                <div class="table-wrap" id="todayPreviewList"></div>
+              </section>
+            </section>
 
-            <section class="card panel-tools">
+            <section class="card panel-tools panel-section hidden" id="appointmentsSection">
               <div class="step-header">
                 <div>
                   <h2 style="margin: 0; font-family: 'Playfair Display', Georgia, serif;">Lista de agendamentos</h2>
@@ -1256,6 +1311,26 @@
                 </div>
               </div>
               <div class="table-wrap" id="adminAppointmentsList"></div>
+            </section>
+
+            <section class="card panel-tools panel-section hidden" id="clientsSection">
+              <div class="step-header">
+                <div>
+                  <h2 style="margin: 0; font-family: 'Playfair Display', Georgia, serif;">Clientes</h2>
+                  <p class="muted" style="margin: 0.25rem 0 0;">Uma visão simples das clientes que já apareceram na agenda.</p>
+                </div>
+              </div>
+              <div class="client-cards" id="adminClientsList"></div>
+            </section>
+
+            <section class="card panel-tools panel-section hidden" id="settingsSection">
+              <div class="step-header">
+                <div>
+                  <h2 style="margin: 0; font-family: 'Playfair Display', Georgia, serif;">Ajustes</h2>
+                  <p class="muted" style="margin: 0.25rem 0 0;">Configurações rápidas desta versão da agenda.</p>
+                </div>
+              </div>
+              <div class="settings-grid" id="adminSettingsList"></div>
             </section>
           </div>
         </div>
@@ -1303,9 +1378,16 @@
       onSnapshot,
       query,
       serverTimestamp,
+      setDoc,
       updateDoc,
       where
     } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+    import {
+      getMessaging,
+      getToken,
+      isSupported,
+      onMessage
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-messaging.js";
 
     // Configuração do Firebase
     // Substitua os valores abaixo pelas credenciais reais do seu projeto Firebase.
@@ -1317,6 +1399,10 @@
       messagingSenderId: "898498392786",
       appId: "1:898498392786:web:83df8982154b1e45cd730b"
     };
+
+    // Gere esta chave em Configurações do projeto, Cloud Messaging, Certificados Web Push.
+    const FIREBASE_VAPID_KEY = "BLec6-tIv71LIHi41QzoAkoD9cdvYKxrTn533RlyQBm-Ohp2jenjHFnHFfdHZIEa0AwHovf_TtK_3G1VCU5-ttA";
+    const hasVapidKey = FIREBASE_VAPID_KEY.length > 40;
 
     // Proteção simples de interface. Em produção, use Firebase Authentication e regras de segurança no Firestore.
     const MANICURE_PIN = "1234";
@@ -1343,13 +1429,16 @@
       bookedTimes: new Set(),
       clientAppointments: [],
       adminAppointments: [],
+      adminSection: "overview",
       adminFilter: "today",
       adminSearch: "",
+      notificationStatus: "inactive",
       unsubscribeAdmin: null
     };
 
     let db = null;
     let auth = null;
+    let messaging = null;
 
     // Elementos da interface
     const el = {
@@ -1372,10 +1461,18 @@
       adminView: document.querySelector("#adminView"),
       backToClientButton: document.querySelector("#backToClientButton"),
       adminLogoutButton: document.querySelector("#adminLogoutButton"),
+      adminMenuButtons: document.querySelectorAll("[data-admin-section]"),
+      overviewSection: document.querySelector("#overviewSection"),
+      appointmentsSection: document.querySelector("#appointmentsSection"),
+      clientsSection: document.querySelector("#clientsSection"),
+      settingsSection: document.querySelector("#settingsSection"),
       metricsGrid: document.querySelector("#metricsGrid"),
+      todayPreviewList: document.querySelector("#todayPreviewList"),
       filterTabs: document.querySelector("#filterTabs"),
       adminSearchInput: document.querySelector("#adminSearchInput"),
       adminAppointmentsList: document.querySelector("#adminAppointmentsList"),
+      adminClientsList: document.querySelector("#adminClientsList"),
+      adminSettingsList: document.querySelector("#adminSettingsList"),
       newClientBookingButton: document.querySelector("#newClientBookingButton"),
       toast: document.querySelector("#toast")
     };
@@ -1401,6 +1498,18 @@
     function fromDateKey(key) {
       const [year, month, day] = key.split("-").map(Number);
       return new Date(year, month - 1, day);
+    }
+
+    function isPastTimeForDate(dateKey, time) {
+      const todayKey = toDateKey(new Date());
+      if (dateKey !== todayKey) return false;
+
+      const [hour, minute] = time.split(":").map(Number);
+      const now = new Date();
+      const slot = new Date();
+      slot.setHours(hour, minute, 0, 0);
+
+      return slot <= now;
     }
 
     function formatFriendlyDate(key) {
@@ -1454,9 +1563,35 @@
         auth = getAuth(app);
         await signInAnonymously(auth);
         db = getFirestore(app);
+        await setupMessaging(app);
       } catch (error) {
         console.error(error);
         showToast("Não foi possível iniciar o Firebase. Confira as credenciais e habilite o login anônimo.");
+      }
+    }
+
+    async function setupMessaging(app) {
+      if (!("serviceWorker" in navigator) || !("Notification" in window)) {
+        state.notificationStatus = "unsupported";
+        return;
+      }
+
+      try {
+        const supported = await isSupported();
+        if (!supported) {
+          state.notificationStatus = "unsupported";
+          return;
+        }
+
+        messaging = getMessaging(app);
+        onMessage(messaging, payload => {
+          const title = payload.notification?.title || "Novo agendamento";
+          const body = payload.notification?.body || "Uma nova reserva chegou na agenda.";
+          showToast(`${title}: ${body}`);
+        });
+      } catch (error) {
+        console.error(error);
+        state.notificationStatus = "unsupported";
       }
     }
 
@@ -1521,6 +1656,13 @@
       el.adminSearchInput.addEventListener("input", event => {
         state.adminSearch = event.target.value.trim().toLowerCase();
         renderAdminAppointments();
+      });
+
+      el.adminMenuButtons.forEach(button => {
+        button.addEventListener("click", () => {
+          state.adminSection = button.dataset.adminSection;
+          renderAdmin();
+        });
       });
     }
 
@@ -1728,9 +1870,11 @@
         <div class="times-grid">
           ${times.map(time => {
             const busy = state.bookedTimes.has(time);
+            const past = isPastTimeForDate(state.selectedDate, time);
+            const unavailable = busy || past;
             const selected = state.selectedTime === time;
             return `
-              <button class="time-button ${busy ? "busy" : ""} ${selected ? "selected" : ""}" type="button" ${busy ? "disabled" : ""} data-time="${time}">
+              <button class="time-button ${unavailable ? "busy" : ""} ${selected ? "selected" : ""}" type="button" ${unavailable ? "disabled" : ""} data-time="${time}">
                 ${time}
               </button>
             `;
@@ -1790,6 +1934,13 @@
 
       try {
         await loadBookedTimes(state.selectedDate);
+        if (isPastTimeForDate(state.selectedDate, state.selectedTime)) {
+          state.step = 3;
+          renderBooking();
+          showToast("Esse horário já passou. Escolha um próximo horário disponível.");
+          return;
+        }
+
         if (state.bookedTimes.has(state.selectedTime)) {
           state.step = 3;
           renderBooking();
@@ -1991,10 +2142,34 @@
     }
 
     function renderAdmin() {
+      renderAdminNavigation();
+      renderAdminSections();
       renderMetrics();
+      renderTodayPreview();
       renderFilters();
       renderAdminAppointments();
+      renderAdminClients();
+      renderAdminSettings();
       refreshIcons();
+    }
+
+    function renderAdminNavigation() {
+      el.adminMenuButtons.forEach(button => {
+        button.classList.toggle("active", button.dataset.adminSection === state.adminSection);
+      });
+    }
+
+    function renderAdminSections() {
+      const sections = {
+        overview: el.overviewSection,
+        appointments: el.appointmentsSection,
+        clients: el.clientsSection,
+        settings: el.settingsSection
+      };
+
+      Object.entries(sections).forEach(([key, section]) => {
+        section.classList.toggle("hidden", key !== state.adminSection);
+      });
     }
 
     function filterByPeriod(items) {
@@ -2036,6 +2211,58 @@
           <small class="muted">${metric.detail}</small>
         </article>
       `).join("");
+    }
+
+    function renderTodayPreview() {
+      const todayKey = toDateKey(startOfToday());
+      const todayItems = state.adminAppointments
+        .filter(item => item.date === todayKey && item.status !== "cancelled")
+        .sort((a, b) => a.time.localeCompare(b.time));
+
+      if (!db) {
+        el.todayPreviewList.innerHTML = `
+          <div class="empty-state">
+            <i data-lucide="cloud-off"></i>
+            <strong>Firebase ainda não configurado</strong>
+            <span>Quando o banco estiver ligado, o resumo do dia aparece aqui.</span>
+          </div>
+        `;
+        return;
+      }
+
+      if (!todayItems.length) {
+        el.todayPreviewList.innerHTML = `
+          <div class="empty-state">
+            <i data-lucide="calendar-heart"></i>
+            <strong>Nenhum horário para hoje</strong>
+            <span>Quando uma cliente reservar um horário de hoje, ele aparece nesta área.</span>
+          </div>
+        `;
+        return;
+      }
+
+      el.todayPreviewList.innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>Horário</th>
+              <th>Cliente</th>
+              <th>Serviço</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${todayItems.map(item => `
+              <tr>
+                <td>${item.time}</td>
+                <td>${item.clientName}</td>
+                <td>${item.serviceName}</td>
+                <td><span class="status ${item.status}">${getStatusLabel(item.status)}</span></td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
     }
 
     function filterByPeriodWithKey(filterKey) {
@@ -2138,6 +2365,162 @@
       });
 
       refreshIcons();
+    }
+
+    function renderAdminClients() {
+      if (!db) {
+        el.adminClientsList.innerHTML = `
+          <div class="empty-state">
+            <i data-lucide="cloud-off"></i>
+            <strong>Firebase ainda não configurado</strong>
+            <span>A lista de clientes aparece depois que a agenda estiver conectada.</span>
+          </div>
+        `;
+        return;
+      }
+
+      const clients = new Map();
+      state.adminAppointments.forEach(item => {
+        const key = item.clientName.trim().toLowerCase();
+        const current = clients.get(key) || {
+          name: item.clientName,
+          count: 0,
+          total: 0,
+          next: null,
+          last: null
+        };
+
+        current.count += 1;
+        current.total += Number(item.servicePrice || 0);
+
+        const stamp = `${item.date} ${item.time}`;
+        if (!current.last || stamp > current.last.stamp) {
+          current.last = { stamp, item };
+        }
+
+        if (item.status !== "cancelled" && item.date >= toDateKey(startOfToday())) {
+          if (!current.next || stamp < current.next.stamp) {
+            current.next = { stamp, item };
+          }
+        }
+
+        clients.set(key, current);
+      });
+
+      const list = Array.from(clients.values()).sort((a, b) => a.name.localeCompare(b.name));
+
+      if (!list.length) {
+        el.adminClientsList.innerHTML = `
+          <div class="empty-state">
+            <i data-lucide="users-round"></i>
+            <strong>Nenhuma cliente cadastrada ainda</strong>
+            <span>As clientes aparecem aqui conforme os agendamentos forem criados.</span>
+          </div>
+        `;
+        return;
+      }
+
+      el.adminClientsList.innerHTML = list.map(client => `
+        <article class="client-mini-card">
+          <header>
+            <strong>${client.name}</strong>
+            <span class="mini-pill">${client.count} agendamento${client.count === 1 ? "" : "s"}</span>
+          </header>
+          <span class="muted">Total reservado: ${money.format(client.total)}</span>
+          <span class="muted">Próximo horário: ${client.next ? `${formatFriendlyDate(client.next.item.date)} às ${client.next.item.time}` : "nenhum horário futuro"}</span>
+          <span class="muted">Último serviço: ${client.last ? client.last.item.serviceName : "sem histórico"}</span>
+        </article>
+      `).join("");
+    }
+
+    function renderAdminSettings() {
+      const notificationLabels = {
+        inactive: "Não ativadas",
+        active: "Ativadas",
+        denied: "Permissão negada",
+        unsupported: "Indisponível neste navegador"
+      };
+      const settings = [
+        { label: "PIN do painel", value: MANICURE_PIN, detail: "Proteção simples para esta versão da página." },
+        { label: "Horários disponíveis", value: `${times[0]} às ${times[times.length - 1]}`, detail: `${times.length} opções de horário configuradas.` },
+        { label: "Serviços", value: services.length, detail: "Edite a lista de serviços no JavaScript do arquivo." },
+        { label: "Coleção do Firestore", value: "appointments", detail: "Todos os agendamentos são salvos nesta coleção." }
+      ];
+
+      el.adminSettingsList.innerHTML = settings.map(setting => `
+        <article class="setting-card">
+          <span class="mini-pill">${setting.label}</span>
+          <strong>${setting.value}</strong>
+          <span class="muted">${setting.detail}</span>
+        </article>
+      `).join("")}
+        <article class="setting-card">
+          <span class="mini-pill">Notificações</span>
+          <strong>${notificationLabels[state.notificationStatus] || "Não ativadas"}</strong>
+          <span class="muted">A dona recebe um aviso quando uma nova reserva chegar.</span>
+          <button class="button button-primary" id="enableNotificationsButton" type="button" ${state.notificationStatus === "active" ? "disabled" : ""}>
+            <i data-lucide="bell"></i>
+            Ativar notificações
+          </button>
+        </article>
+      `;
+
+      const button = document.querySelector("#enableNotificationsButton");
+      if (button) {
+        button.addEventListener("click", enableOwnerNotifications);
+      }
+    }
+
+    async function enableOwnerNotifications() {
+      if (!db || !auth?.currentUser) {
+        showToast("O Firebase ainda não está pronto. Tente novamente em alguns segundos.");
+        return;
+      }
+
+      if (!messaging || !("serviceWorker" in navigator) || !("Notification" in window)) {
+        state.notificationStatus = "unsupported";
+        renderAdminSettings();
+        showToast("Este navegador não suporta notificações web neste modo.");
+        return;
+      }
+
+      if (!hasVapidKey) {
+        showToast("Cole a chave pública VAPID do Firebase no código para ativar notificações.");
+        return;
+      }
+
+      try {
+        const permission = await Notification.requestPermission();
+        if (permission !== "granted") {
+          state.notificationStatus = "denied";
+          renderAdminSettings();
+          showToast("A permissão de notificação não foi liberada neste aparelho.");
+          return;
+        }
+
+        const registration = await navigator.serviceWorker.register("/firebase-messaging-sw.js");
+        const token = await getToken(messaging, {
+          vapidKey: FIREBASE_VAPID_KEY,
+          serviceWorkerRegistration: registration
+        });
+
+        await setDoc(doc(db, "ownerNotificationTokens", auth.currentUser.uid), {
+          uid: auth.currentUser.uid,
+          token,
+          permission,
+          userAgent: navigator.userAgent,
+          updatedAt: serverTimestamp(),
+          createdAt: serverTimestamp(),
+          source: "owner_panel"
+        }, { merge: true });
+
+        state.notificationStatus = "active";
+        renderAdminSettings();
+        showToast("Notificações ativadas neste aparelho.");
+      } catch (error) {
+        console.error(error);
+        showToast("Não foi possível ativar as notificações. Confira a chave VAPID e o HTTPS.");
+      }
     }
 
     async function handleAdminAction(id, action) {
