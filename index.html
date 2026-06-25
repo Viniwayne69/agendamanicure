@@ -2462,7 +2462,8 @@
         { label: "Coleção do Firestore", value: "appointments", detail: "Todos os agendamentos são salvos nesta coleção." }
       ];
 
-      el.adminSettingsList.innerHTML = settings.map(setting => `
+      el.adminSettingsList.innerHTML = `
+        ${settings.map(setting => `
         <article class="setting-card">
           <span class="mini-pill">${setting.label}</span>
           <strong>${setting.value}</strong>
