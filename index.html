@@ -1948,7 +1948,7 @@
           return;
         }
 
-        await addDoc(collection(db, "appointments"), {
+        const appointmentRef = await addDoc(collection(db, "appointments"), {
           clientName: state.clientName,
           serviceId: state.selectedService.id,
           serviceName: state.selectedService.name,
@@ -1962,11 +1962,26 @@
           source: "client_lp"
         });
 
+        notifyOwnerAboutAppointment(appointmentRef.id);
         renderSuccess();
         await loadClientAppointments();
       } catch (error) {
         console.error(error);
         showToast("Não foi possível salvar o agendamento. Confira as regras e credenciais do Firebase.");
+      }
+    }
+
+    async function notifyOwnerAboutAppointment(appointmentId) {
+      try {
+        await fetch("/api/notify-owner", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ appointmentId })
+        });
+      } catch (error) {
+        console.warn("A reserva foi salva, mas a notificação não foi enviada agora.", error);
       }
     }
 
