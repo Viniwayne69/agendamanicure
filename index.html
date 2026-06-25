@@ -1,0 +1,2169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nail Agenda, agendamento para manicures</title>
+  <meta name="description" content="Sistema elegante de agendamento online para manicures, com calendário, horários disponíveis e painel de gestão.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    /* CSS da identidade visual */
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: #38211d;
+      font-family: "Poppins", Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(226, 145, 153, 0.25), transparent 34rem),
+        linear-gradient(135deg, #fff8f4 0%, #f7e8df 42%, #fffdf9 100%);
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+    }
+
+    .app-shell {
+      display: grid;
+      min-height: 100vh;
+    }
+
+    .brand-rail {
+      position: relative;
+      display: none;
+      overflow: hidden;
+      padding: 2rem;
+      color: #794235;
+      background:
+        linear-gradient(180deg, rgba(255, 249, 245, 0.98), rgba(255, 238, 230, 0.88)),
+        url("https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=900&q=80") center bottom / cover;
+      border-right: 1px solid rgba(141, 86, 75, 0.16);
+    }
+
+    .brand-rail::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 46%;
+      background: linear-gradient(180deg, transparent, rgba(87, 42, 35, 0.1));
+      pointer-events: none;
+    }
+
+    .brand-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+
+    .logo-script {
+      margin: 0;
+      color: #b96f62;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(3.2rem, 7vw, 5.6rem);
+      font-weight: 500;
+      line-height: 0.9;
+    }
+
+    .logo-sub {
+      margin: 0.55rem 0 0;
+      color: #bd7a70;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+    }
+
+    .rail-copy {
+      max-width: 18rem;
+      margin-top: 2rem;
+    }
+
+    .rail-copy h2 {
+      margin: 0 0 0.6rem;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 1.65rem;
+      font-weight: 600;
+    }
+
+    .rail-copy p {
+      margin: 0;
+      color: #7b534d;
+      line-height: 1.7;
+    }
+
+    .rail-list {
+      display: grid;
+      gap: 1rem;
+      margin: auto 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .rail-list li {
+      display: grid;
+      grid-template-columns: 2.7rem 1fr;
+      gap: 0.85rem;
+      align-items: center;
+      padding: 0.85rem;
+      border: 1px solid rgba(185, 111, 98, 0.18);
+      border-radius: 1.1rem;
+      background: rgba(255, 251, 248, 0.8);
+      box-shadow: 0 1rem 2.6rem rgba(82, 43, 36, 0.08);
+      backdrop-filter: blur(16px);
+    }
+
+    .icon-bubble {
+      display: grid;
+      width: 2.7rem;
+      height: 2.7rem;
+      place-items: center;
+      color: #b96f62;
+      border-radius: 50%;
+      background: #fff1ed;
+    }
+
+    .rail-list strong {
+      display: block;
+      margin-bottom: 0.15rem;
+      font-size: 0.88rem;
+    }
+
+    .rail-list span {
+      color: #8a655f;
+      font-size: 0.78rem;
+      line-height: 1.45;
+    }
+
+    .main-area {
+      min-width: 0;
+      padding: 1rem;
+    }
+
+    .topbar {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 70rem;
+      margin: 0 auto 1rem;
+      padding: 0.75rem;
+      border: 1px solid rgba(185, 111, 98, 0.14);
+      border-radius: 1.2rem;
+      background: rgba(255, 252, 249, 0.82);
+      box-shadow: 0 1rem 2.6rem rgba(82, 43, 36, 0.06);
+      backdrop-filter: blur(18px);
+    }
+
+    .mobile-logo {
+      display: flex;
+      flex-direction: column;
+      color: #b96f62;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 1.6rem;
+      line-height: 1;
+    }
+
+    .mobile-logo span {
+      margin-top: 0.15rem;
+      color: #b9857b;
+      font-family: "Poppins", Arial, sans-serif;
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.34em;
+      text-transform: uppercase;
+    }
+
+    .topbar-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      justify-content: flex-end;
+    }
+
+    .button {
+      display: inline-flex;
+      min-height: 2.65rem;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.72rem 1rem;
+      color: #803b36;
+      border: 1px solid rgba(185, 111, 98, 0.28);
+      border-radius: 0.85rem;
+      background: #fffaf7;
+      text-decoration: none;
+      transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0.85rem 1.7rem rgba(125, 65, 57, 0.12);
+    }
+
+    .button-primary {
+      color: #fff;
+      border: 0;
+      background: linear-gradient(135deg, #d8788a, #b85f67);
+      box-shadow: 0 0.85rem 1.8rem rgba(197, 94, 111, 0.26);
+    }
+
+    .button-ghost {
+      background: rgba(255, 252, 249, 0.62);
+    }
+
+    .button-soft {
+      color: #8b4b43;
+      background: #fff0eb;
+    }
+
+    .button-danger {
+      color: #a0353a;
+      border-color: rgba(191, 70, 77, 0.28);
+      background: #fff4f2;
+    }
+
+    .button-success {
+      color: #2e714d;
+      border-color: rgba(73, 145, 99, 0.28);
+      background: #eff9f1;
+    }
+
+    .screen {
+      max-width: 70rem;
+      margin: 0 auto;
+    }
+
+    .screen.login-active {
+      display: grid;
+      min-height: calc(100vh - 6.2rem);
+      align-items: stretch;
+    }
+
+    .card {
+      border: 1px solid rgba(185, 111, 98, 0.14);
+      border-radius: 1.2rem;
+      background: rgba(255, 252, 249, 0.9);
+      box-shadow: 0 1.3rem 3.2rem rgba(82, 43, 36, 0.08);
+      backdrop-filter: blur(18px);
+    }
+
+    .login-card {
+      display: grid;
+      gap: 1.55rem;
+      width: min(100%, 32rem);
+      min-height: min(42rem, calc(100vh - 7.4rem));
+      align-content: center;
+      margin: 0 auto;
+      padding: clamp(2rem, 7vw, 3.4rem) clamp(2rem, 7vw, 3rem);
+      text-align: center;
+    }
+
+    .login-mark {
+      width: fit-content;
+      margin: 0 auto;
+      color: #b96f62;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(3.2rem, 12vw, 4.25rem);
+      line-height: 0.9;
+    }
+
+    .login-card h1,
+    .section-title h1,
+    .section-title h2,
+    .step-card h2,
+    .panel-title h1 {
+      margin: 0;
+      color: #2f1c19;
+      font-family: "Playfair Display", Georgia, serif;
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+
+    .login-card h1 {
+      font-size: clamp(2.45rem, 10vw, 4rem);
+      line-height: 1.06;
+    }
+
+    .login-card p,
+    .section-title p,
+    .step-card p,
+    .muted {
+      color: #7e615b;
+      line-height: 1.65;
+    }
+
+    .field {
+      position: relative;
+      display: grid;
+      gap: 0.45rem;
+      text-align: left;
+    }
+
+    .field label {
+      color: #6f4039;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-wrap i {
+      position: absolute;
+      top: 50%;
+      left: 0.9rem;
+      width: 1rem;
+      height: 1rem;
+      color: #b96f62;
+      transform: translateY(-50%);
+    }
+
+    input {
+      width: 100%;
+      min-height: 3.05rem;
+      padding: 0.8rem 0.95rem 0.8rem 2.6rem;
+      color: #38211d;
+      border: 1px solid rgba(185, 111, 98, 0.24);
+      border-radius: 0.85rem;
+      background: rgba(255, 255, 255, 0.84);
+      outline: none;
+      transition: border 180ms ease, box-shadow 180ms ease;
+    }
+
+    input:focus {
+      border-color: #d8788a;
+      box-shadow: 0 0 0 0.25rem rgba(216, 120, 138, 0.16);
+    }
+
+    .notice {
+      display: flex;
+      gap: 0.65rem;
+      align-items: flex-start;
+      padding: 0.9rem;
+      color: #7c4c31;
+      border: 1px solid rgba(197, 150, 76, 0.2);
+      border-radius: 0.95rem;
+      background: #fff5e8;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      text-align: left;
+    }
+
+    .notice i {
+      flex: 0 0 auto;
+      width: 1.1rem;
+      height: 1.1rem;
+      margin-top: 0.1rem;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .client-layout {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .hero-strip {
+      display: grid;
+      gap: 1rem;
+      padding: 1.2rem;
+    }
+
+    .section-title {
+      display: grid;
+      gap: 0.45rem;
+    }
+
+    .section-title h1 {
+      font-size: clamp(2rem, 8vw, 3.4rem);
+    }
+
+    .section-title p {
+      max-width: 42rem;
+      margin: 0;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.45rem 0.72rem;
+      color: #925244;
+      border: 1px solid rgba(185, 111, 98, 0.2);
+      border-radius: 999px;
+      background: #fff4ef;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .progress-card {
+      display: grid;
+      gap: 0.65rem;
+      padding: 1rem;
+    }
+
+    .step-progress {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.4rem;
+    }
+
+    .step-dot {
+      display: grid;
+      gap: 0.45rem;
+      justify-items: center;
+      color: #98736d;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .step-dot span {
+      display: grid;
+      width: 2.15rem;
+      height: 2.15rem;
+      place-items: center;
+      color: #a75b53;
+      border: 1px solid rgba(185, 111, 98, 0.2);
+      border-radius: 50%;
+      background: #fff5f1;
+    }
+
+    .step-dot.active,
+    .step-dot.done {
+      color: #7c3a35;
+    }
+
+    .step-dot.active span,
+    .step-dot.done span {
+      color: #fff;
+      border-color: transparent;
+      background: linear-gradient(135deg, #d8788a, #b85f67);
+    }
+
+    .work-area {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .step-card {
+      padding: 1.1rem;
+    }
+
+    .step-header {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .step-card h2 {
+      font-size: clamp(1.55rem, 5vw, 2.2rem);
+    }
+
+    .step-card p {
+      margin: 0.3rem 0 0;
+    }
+
+    .services-grid {
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    .service-card {
+      display: grid;
+      grid-template-columns: 3rem 1fr auto;
+      gap: 0.8rem;
+      align-items: center;
+      padding: 0.85rem;
+      border: 1px solid rgba(185, 111, 98, 0.16);
+      border-radius: 1rem;
+      background: #fffaf7;
+      transition: border 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .service-card:hover,
+    .service-card.selected {
+      transform: translateY(-1px);
+      border-color: rgba(216, 120, 138, 0.56);
+      box-shadow: 0 1rem 2.4rem rgba(125, 65, 57, 0.1);
+    }
+
+    .service-icon {
+      display: grid;
+      width: 3rem;
+      height: 3rem;
+      place-items: center;
+      color: #b96f62;
+      border-radius: 0.95rem;
+      background: #fff0ec;
+    }
+
+    .service-card h3 {
+      margin: 0 0 0.2rem;
+      font-size: 0.98rem;
+    }
+
+    .service-card p {
+      margin: 0;
+      color: #85665f;
+      font-size: 0.78rem;
+      line-height: 1.45;
+    }
+
+    .service-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-top: 0.45rem;
+    }
+
+    .mini-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.45rem;
+      color: #81443c;
+      border-radius: 999px;
+      background: #fff0eb;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    .calendar-card {
+      overflow: hidden;
+      border: 1px solid rgba(185, 111, 98, 0.16);
+      border-radius: 1rem;
+      background: #fffaf7;
+    }
+
+    .calendar-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.9rem;
+      border-bottom: 1px solid rgba(185, 111, 98, 0.12);
+      background: #fff6f1;
+    }
+
+    .calendar-title {
+      font-weight: 700;
+      color: #6d3832;
+      text-transform: capitalize;
+    }
+
+    .icon-button {
+      display: inline-grid;
+      width: 2.45rem;
+      height: 2.45rem;
+      place-items: center;
+      color: #9c5148;
+      border: 1px solid rgba(185, 111, 98, 0.2);
+      border-radius: 0.75rem;
+      background: #fffaf7;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0.35rem;
+      padding: 0.85rem;
+    }
+
+    .weekday,
+    .day-button {
+      display: grid;
+      min-height: 2.35rem;
+      place-items: center;
+      border-radius: 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .weekday {
+      color: #95736c;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+    }
+
+    .day-button {
+      color: #4a2a26;
+      border: 1px solid transparent;
+      background: transparent;
+    }
+
+    .day-button.available {
+      color: #8f4b45;
+      border-color: rgba(216, 120, 138, 0.18);
+      background: #fff0ef;
+    }
+
+    .day-button.today {
+      border-color: rgba(181, 127, 48, 0.44);
+      box-shadow: inset 0 0 0 0.12rem rgba(181, 127, 48, 0.18);
+    }
+
+    .day-button.selected {
+      color: #fff;
+      background: linear-gradient(135deg, #d8788a, #b85f67);
+    }
+
+    .day-button.disabled {
+      color: #c6b3ae;
+      background: transparent;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 0.85rem;
+      color: #85665f;
+      font-size: 0.78rem;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .legend-dot {
+      width: 0.7rem;
+      height: 0.7rem;
+      border-radius: 50%;
+      background: #e7a0a9;
+    }
+
+    .legend-dot.off {
+      background: #e7d8d3;
+    }
+
+    .times-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.6rem;
+    }
+
+    .time-button {
+      min-height: 3rem;
+      color: #984b48;
+      border: 1px solid rgba(216, 120, 138, 0.34);
+      border-radius: 0.85rem;
+      background: #fff8f5;
+      font-weight: 700;
+    }
+
+    .time-button:hover {
+      background: #fff0ef;
+    }
+
+    .time-button.selected {
+      color: #fff;
+      border-color: transparent;
+      background: linear-gradient(135deg, #d8788a, #b85f67);
+    }
+
+    .time-button.busy {
+      color: #b8a8a3;
+      border-color: rgba(180, 160, 155, 0.16);
+      background: #f6efec;
+      text-decoration: line-through;
+    }
+
+    .summary-list {
+      display: grid;
+      gap: 0.65rem;
+      padding: 0;
+      margin: 1rem 0;
+      list-style: none;
+    }
+
+    .summary-list li {
+      display: flex;
+      gap: 0.7rem;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.78rem;
+      border: 1px solid rgba(185, 111, 98, 0.14);
+      border-radius: 0.85rem;
+      background: #fffaf7;
+    }
+
+    .summary-list span {
+      color: #80635c;
+      font-size: 0.82rem;
+    }
+
+    .summary-list strong {
+      text-align: right;
+    }
+
+    .success-mark {
+      display: grid;
+      width: 4.7rem;
+      height: 4.7rem;
+      place-items: center;
+      margin: 0 auto 1rem;
+      color: #fff;
+      border: 0.55rem solid #f7cfca;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #d8788a, #9f5558);
+      box-shadow: 0 1rem 2.4rem rgba(155, 74, 84, 0.2);
+    }
+
+    .appointments-section {
+      padding: 1.1rem;
+    }
+
+    .appointments-list {
+      display: grid;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .appointment-card {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.85rem;
+      align-items: center;
+      padding: 0.85rem;
+      border: 1px solid rgba(185, 111, 98, 0.14);
+      border-radius: 1rem;
+      background: #fffaf7;
+    }
+
+    .date-badge {
+      display: grid;
+      width: 4.25rem;
+      min-height: 4.25rem;
+      place-items: center;
+      color: #823f39;
+      border-radius: 0.95rem;
+      background: #fff0ec;
+      text-align: center;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .date-badge small {
+      color: #a0665d;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+    }
+
+    .status {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      padding: 0.26rem 0.55rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    .status.confirmed {
+      color: #2e714d;
+      background: #eaf8ee;
+    }
+
+    .status.cancelled {
+      color: #a0353a;
+      background: #fff0ef;
+    }
+
+    .status.done {
+      color: #72552a;
+      background: #fff2d7;
+    }
+
+    .panel-screen {
+      max-width: 72rem;
+      margin: 0 auto;
+    }
+
+    .panel-shell {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .panel-sidebar {
+      display: grid;
+      gap: 1rem;
+      align-content: start;
+      padding: 1rem;
+      color: #fff;
+      border-radius: 1.2rem;
+      background:
+        linear-gradient(160deg, rgba(67, 33, 29, 0.96), rgba(93, 52, 46, 0.94)),
+        url("https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=800&q=80") center / cover;
+    }
+
+    .panel-sidebar .logo-script {
+      color: #ffd6ce;
+      font-size: 3rem;
+    }
+
+    .panel-menu {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .panel-menu button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      min-height: 2.5rem;
+      padding: 0.65rem 0.8rem;
+      color: #fff;
+      border: 1px solid rgba(255, 230, 222, 0.2);
+      border-radius: 0.75rem;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .panel-content {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .panel-title {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 1rem;
+    }
+
+    .panel-title h1 {
+      font-size: clamp(1.7rem, 5vw, 2.55rem);
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+    }
+
+    .metric {
+      padding: 1rem;
+    }
+
+    .metric span {
+      color: #8d6d66;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: 0.35rem;
+      color: #281817;
+      font-size: clamp(1.35rem, 6vw, 2rem);
+    }
+
+    .panel-tools {
+      display: grid;
+      gap: 0.7rem;
+      padding: 1rem;
+    }
+
+    .filter-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .filter-tabs button {
+      min-height: 2.35rem;
+      padding: 0.55rem 0.75rem;
+      color: #8a4a43;
+      border: 1px solid rgba(185, 111, 98, 0.2);
+      border-radius: 999px;
+      background: #fffaf7;
+      font-weight: 700;
+    }
+
+    .filter-tabs button.active {
+      color: #fff;
+      border-color: transparent;
+      background: linear-gradient(135deg, #d8788a, #b85f67);
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      padding: 0.2rem;
+    }
+
+    table {
+      width: 100%;
+      min-width: 48rem;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 1rem;
+      background: #fffaf7;
+    }
+
+    th,
+    td {
+      padding: 0.8rem;
+      border-bottom: 1px solid rgba(185, 111, 98, 0.12);
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    th {
+      color: #7d5a53;
+      background: #fff2ed;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+    }
+
+    td {
+      color: #3b2521;
+      font-size: 0.86rem;
+    }
+
+    .actions {
+      display: flex;
+      gap: 0.35rem;
+      align-items: center;
+    }
+
+    .actions button {
+      display: inline-grid;
+      width: 2rem;
+      height: 2rem;
+      place-items: center;
+      border: 1px solid rgba(185, 111, 98, 0.18);
+      border-radius: 0.6rem;
+      background: #fff;
+    }
+
+    .modal {
+      position: fixed;
+      z-index: 20;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 1rem;
+      background: rgba(44, 27, 24, 0.38);
+      backdrop-filter: blur(10px);
+    }
+
+    .modal-card {
+      display: grid;
+      gap: 1rem;
+      width: min(100%, 25rem);
+      padding: 1.4rem;
+      text-align: center;
+    }
+
+    .toast {
+      position: fixed;
+      right: 1rem;
+      bottom: 1rem;
+      z-index: 30;
+      max-width: min(24rem, calc(100vw - 2rem));
+      padding: 0.9rem 1rem;
+      color: #fff;
+      border-radius: 0.95rem;
+      background: #5f3430;
+      box-shadow: 0 1rem 2.6rem rgba(46, 25, 22, 0.24);
+      line-height: 1.5;
+    }
+
+    .empty-state {
+      display: grid;
+      gap: 0.5rem;
+      justify-items: center;
+      padding: 1.5rem;
+      color: #81635d;
+      border: 1px dashed rgba(185, 111, 98, 0.26);
+      border-radius: 1rem;
+      background: rgba(255, 248, 245, 0.68);
+      text-align: center;
+    }
+
+    @media (min-width: 680px) {
+      .main-area {
+        padding: 1.4rem;
+      }
+
+      .hero-strip {
+        grid-template-columns: 1.2fr 0.8fr;
+        align-items: center;
+        padding: 1.4rem;
+      }
+
+      .work-area {
+        grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr);
+        align-items: start;
+      }
+
+      .times-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .metrics-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (min-width: 1050px) {
+      .app-shell {
+        grid-template-columns: minmax(18rem, 20rem) 1fr;
+      }
+
+      .brand-rail {
+        display: block;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+      }
+
+      .mobile-logo {
+        display: none;
+      }
+
+      .main-area {
+        padding: 1.6rem;
+      }
+
+      .panel-shell {
+        grid-template-columns: 14rem 1fr;
+      }
+
+      .panel-sidebar {
+        min-height: 32rem;
+      }
+
+      .panel-menu {
+        display: grid;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .topbar {
+        align-items: flex-start;
+      }
+
+      .topbar-actions {
+        width: min-content;
+      }
+
+      .button {
+        min-height: 2.45rem;
+        padding: 0.62rem 0.78rem;
+        font-size: 0.82rem;
+      }
+
+      .service-card {
+        grid-template-columns: 2.7rem 1fr;
+      }
+
+      .service-card .icon-button {
+        grid-column: 1 / -1;
+        width: 100%;
+      }
+
+      .step-header,
+      .panel-title {
+        display: grid;
+      }
+
+      .summary-list li {
+        display: grid;
+      }
+
+      .summary-list strong {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="brand-rail" aria-label="Identidade da Nail Agenda">
+      <div class="brand-content">
+        <div>
+          <p class="logo-script">Nail</p>
+          <p class="logo-sub">Agenda</p>
+        </div>
+        <div class="rail-copy">
+          <h2>Agende seu horário com carinho</h2>
+          <p>Uma experiência delicada para escolher serviço, dia e horário sem pressa, com a beleza também morando na organização.</p>
+        </div>
+        <ul class="rail-list">
+          <li>
+            <span class="icon-bubble"><i data-lucide="calendar-heart"></i></span>
+            <span><strong>Escolha o dia</strong>Veja os dias disponíveis no calendário.</span>
+          </li>
+          <li>
+            <span class="icon-bubble"><i data-lucide="clock"></i></span>
+            <span><strong>Escolha o horário</strong>Horários livres e atualizados em tempo real.</span>
+          </li>
+          <li>
+            <span class="icon-bubble"><i data-lucide="heart"></i></span>
+            <span><strong>Cuidado e carinho</strong>Seu momento de autocuidado fica reservado.</span>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="mobile-logo">Nail <span>Agenda</span></div>
+        <div class="topbar-actions">
+          <button class="button button-ghost hidden" id="backToClientButton" type="button">
+            <i data-lucide="arrow-left"></i>
+            Área da cliente
+          </button>
+          <button class="button button-ghost" id="panelAccessButton" type="button">
+            <i data-lucide="lock-keyhole"></i>
+            Painel da Manicure
+          </button>
+        </div>
+      </header>
+
+      <section class="screen" id="clientView">
+        <div class="card login-card hidden" id="loginView">
+          <div class="login-mark">Nail</div>
+          <div>
+            <h1>Olá! Me fala seu nome</h1>
+          </div>
+          <form id="loginForm">
+            <div class="field">
+              <label for="clientNameInput">Seu nome</label>
+              <div class="input-wrap">
+                <i data-lucide="user-round"></i>
+                <input id="clientNameInput" autocomplete="name" placeholder="Digite seu nome" required>
+              </div>
+            </div>
+            <button class="button button-primary" type="submit" style="width: 100%; margin-top: 1rem;">Entrar</button>
+          </form>
+          <div class="notice">
+            <i data-lucide="shield-check"></i>
+            <span>O nome será lembrado neste dispositivo para seus próximos acessos hoje.</span>
+          </div>
+        </div>
+
+        <div class="client-layout hidden" id="bookingView">
+          <section class="card hero-strip">
+            <div class="section-title">
+              <span class="status-pill"><i data-lucide="sparkles"></i> Agenda online</span>
+              <h1 id="clientGreeting">Oi! Escolha o melhor horário para cuidar de você</h1>
+              <p>Selecione o serviço, escolha o dia no calendário e reserve um horário com uma confirmação simples.</p>
+            </div>
+            <div></div>
+          </section>
+
+          <section class="card progress-card" aria-label="Etapas do agendamento">
+            <div class="step-progress" id="stepProgress"></div>
+          </section>
+
+          <div class="work-area">
+            <section class="card step-card" id="stepContent"></section>
+            <aside class="card step-card" id="supportContent"></aside>
+          </div>
+
+          <section class="card appointments-section" id="clientAppointments">
+            <div class="section-title">
+              <h2>Meus agendamentos</h2>
+              <p>Seus próximos horários aparecem aqui, sempre ligados ao nome salvo neste navegador.</p>
+            </div>
+            <div class="appointments-list" id="clientAppointmentsList"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="panel-screen hidden" id="adminView">
+        <div class="panel-shell">
+          <aside class="panel-sidebar">
+            <div>
+              <p class="logo-script">Nail</p>
+              <p class="logo-sub" style="color: #ffd6ce;">Agenda</p>
+            </div>
+            <nav class="panel-menu" aria-label="Menu do painel">
+              <button type="button"><i data-lucide="layout-dashboard"></i> Visão geral</button>
+              <button type="button"><i data-lucide="calendar-days"></i> Agendamentos</button>
+              <button type="button"><i data-lucide="users-round"></i> Clientes</button>
+              <button type="button"><i data-lucide="settings"></i> Ajustes</button>
+            </nav>
+            <button class="button button-ghost" id="adminLogoutButton" type="button" style="color: #fff;">
+              <i data-lucide="log-out"></i>
+              Sair
+            </button>
+          </aside>
+
+          <div class="panel-content">
+            <section class="card panel-title">
+              <div>
+                <h1>Olá, Manicure!</h1>
+                <p class="muted" style="margin: 0.3rem 0 0;">Aqui está o resumo dos seus agendamentos.</p>
+              </div>
+              <button class="button button-primary" id="newClientBookingButton" type="button">
+                <i data-lucide="plus"></i>
+                Novo agendamento
+              </button>
+            </section>
+
+            <section class="metrics-grid" id="metricsGrid"></section>
+
+            <section class="card panel-tools">
+              <div class="step-header">
+                <div>
+                  <h2 style="margin: 0; font-family: 'Playfair Display', Georgia, serif;">Lista de agendamentos</h2>
+                  <p class="muted" style="margin: 0.25rem 0 0;">Filtre por período e encontre clientes pelo nome.</p>
+                </div>
+              </div>
+              <div class="filter-tabs" id="filterTabs"></div>
+              <div class="field">
+                <label for="adminSearchInput">Buscar cliente</label>
+                <div class="input-wrap">
+                  <i data-lucide="search"></i>
+                  <input id="adminSearchInput" placeholder="Digite o nome da cliente">
+                </div>
+              </div>
+              <div class="table-wrap" id="adminAppointmentsList"></div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <div class="modal hidden" id="pinModal" role="dialog" aria-modal="true" aria-labelledby="pinTitle">
+    <div class="card modal-card">
+      <span class="icon-bubble" style="margin: 0 auto;"><i data-lucide="lock"></i></span>
+      <div>
+        <h2 id="pinTitle" style="margin: 0; font-family: 'Playfair Display', Georgia, serif;">Painel da Manicure</h2>
+        <p class="muted" style="margin: 0.4rem 0 0;">Acesso restrito para acompanhar e cuidar da agenda.</p>
+      </div>
+      <form id="pinForm">
+        <div class="field">
+          <label for="pinInput">PIN de acesso</label>
+          <div class="input-wrap">
+            <i data-lucide="key-round"></i>
+            <input id="pinInput" type="password" inputmode="numeric" placeholder="Digite a senha">
+          </div>
+        </div>
+        <button class="button button-primary" type="submit" style="width: 100%; margin-top: 1rem;">Entrar</button>
+      </form>
+      <button class="button button-ghost" id="closePinModalButton" type="button">Voltar</button>
+    </div>
+  </div>
+
+  <div class="toast hidden" id="toast"></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import {
+      getAuth,
+      signInAnonymously
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+    import {
+      addDoc,
+      collection,
+      deleteDoc,
+      doc,
+      getDocs,
+      getFirestore,
+      onSnapshot,
+      query,
+      serverTimestamp,
+      updateDoc,
+      where
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+    // Configuração do Firebase
+    // Substitua os valores abaixo pelas credenciais reais do seu projeto Firebase.
+    const firebaseConfig = {
+      apiKey: "AIzaSyBnNYXIbX5DT9vJrTiwMmxPbwxKtRM7P8c",
+      authDomain: "calendariomanicure-f7bd1.firebaseapp.com",
+      projectId: "calendariomanicure-f7bd1",
+      storageBucket: "calendariomanicure-f7bd1.firebasestorage.app",
+      messagingSenderId: "898498392786",
+      appId: "1:898498392786:web:83df8982154b1e45cd730b"
+    };
+
+    // Proteção simples de interface. Em produção, use Firebase Authentication e regras de segurança no Firestore.
+    const MANICURE_PIN = "1234";
+
+    // Estado da aplicação
+    const CLIENT_NAME_KEY = "nailAgenda_clientName";
+    const steps = ["Serviço", "Dia", "Horário", "Confirmação"];
+    const times = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00"];
+    const services = [
+      { id: "manicure-tradicional", name: "Manicure tradicional", description: "Cutilagem delicada, lixamento e esmaltação clássica.", price: 35, duration: 60, icon: "hand-heart" },
+      { id: "esmaltacao-em-gel", name: "Esmaltação em gel", description: "Brilho duradouro e acabamento elegante.", price: 50, duration: 75, icon: "sparkles" },
+      { id: "alongamento-em-gel", name: "Alongamento em gel", description: "Formato impecável para mãos marcantes.", price: 120, duration: 120, icon: "gem" },
+      { id: "nail-art", name: "Nail art", description: "Detalhes artísticos para uma unha com presença.", price: 15, duration: 30, icon: "palette" },
+      { id: "pe-e-mao", name: "Pé e mão", description: "Cuidado completo para mãos e pés.", price: 70, duration: 90, icon: "flower-2" }
+    ];
+
+    const state = {
+      clientName: "",
+      step: 1,
+      selectedService: null,
+      selectedDate: "",
+      selectedTime: "",
+      calendarDate: new Date(),
+      bookedTimes: new Set(),
+      clientAppointments: [],
+      adminAppointments: [],
+      adminFilter: "today",
+      adminSearch: "",
+      unsubscribeAdmin: null
+    };
+
+    let db = null;
+    let auth = null;
+
+    // Elementos da interface
+    const el = {
+      loginView: document.querySelector("#loginView"),
+      bookingView: document.querySelector("#bookingView"),
+      loginForm: document.querySelector("#loginForm"),
+      clientScreen: document.querySelector("#clientView"),
+      clientNameInput: document.querySelector("#clientNameInput"),
+      clientGreeting: document.querySelector("#clientGreeting"),
+      stepProgress: document.querySelector("#stepProgress"),
+      stepContent: document.querySelector("#stepContent"),
+      supportContent: document.querySelector("#supportContent"),
+      clientAppointmentsList: document.querySelector("#clientAppointmentsList"),
+      panelAccessButton: document.querySelector("#panelAccessButton"),
+      pinModal: document.querySelector("#pinModal"),
+      pinForm: document.querySelector("#pinForm"),
+      pinInput: document.querySelector("#pinInput"),
+      closePinModalButton: document.querySelector("#closePinModalButton"),
+      clientView: document.querySelector("#clientView"),
+      adminView: document.querySelector("#adminView"),
+      backToClientButton: document.querySelector("#backToClientButton"),
+      adminLogoutButton: document.querySelector("#adminLogoutButton"),
+      metricsGrid: document.querySelector("#metricsGrid"),
+      filterTabs: document.querySelector("#filterTabs"),
+      adminSearchInput: document.querySelector("#adminSearchInput"),
+      adminAppointmentsList: document.querySelector("#adminAppointmentsList"),
+      newClientBookingButton: document.querySelector("#newClientBookingButton"),
+      toast: document.querySelector("#toast")
+    };
+
+    // Funções utilitárias
+    const money = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+    const monthFormatter = new Intl.DateTimeFormat("pt-BR", { month: "long", year: "numeric" });
+    const longDateFormatter = new Intl.DateTimeFormat("pt-BR", { weekday: "long", day: "2-digit", month: "long" });
+
+    function startOfToday() {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return today;
+    }
+
+    function toDateKey(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function fromDateKey(key) {
+      const [year, month, day] = key.split("-").map(Number);
+      return new Date(year, month - 1, day);
+    }
+
+    function formatFriendlyDate(key) {
+      if (!key) return "";
+      return longDateFormatter.format(fromDateKey(key));
+    }
+
+    function getStatusLabel(status) {
+      const labels = {
+        confirmed: "Confirmado",
+        cancelled: "Cancelado",
+        done: "Concluído"
+      };
+      return labels[status] || status;
+    }
+
+    function isFirebaseConfigured() {
+      return firebaseConfig.apiKey !== "SUA_API_KEY" && firebaseConfig.projectId !== "SEU_PROJECT_ID";
+    }
+
+    function refreshIcons() {
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+    }
+
+    function showToast(message) {
+      el.toast.textContent = message;
+      el.toast.classList.remove("hidden");
+      window.clearTimeout(showToast.timer);
+      showToast.timer = window.setTimeout(() => el.toast.classList.add("hidden"), 4200);
+    }
+
+    // Funções de localStorage
+    function getSavedClientName() {
+      return localStorage.getItem(CLIENT_NAME_KEY) || "";
+    }
+
+    function saveClientName(name) {
+      localStorage.setItem(CLIENT_NAME_KEY, name.trim());
+    }
+
+    // Inicialização do Firebase
+    async function setupFirebase() {
+      if (!isFirebaseConfigured()) {
+        return;
+      }
+
+      try {
+        const app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+        await signInAnonymously(auth);
+        db = getFirestore(app);
+      } catch (error) {
+        console.error(error);
+        showToast("Não foi possível iniciar o Firebase. Confira as credenciais e habilite o login anônimo.");
+      }
+    }
+
+    // Funções do fluxo principal
+    async function boot() {
+      await setupFirebase();
+      state.calendarDate = startOfToday();
+      state.clientName = getSavedClientName();
+
+      if (state.clientName) {
+        showBooking();
+      } else {
+        showLogin();
+      }
+
+      bindEvents();
+      refreshIcons();
+    }
+
+    function bindEvents() {
+      el.loginForm.addEventListener("submit", event => {
+        event.preventDefault();
+        const name = el.clientNameInput.value.trim();
+        if (!name) {
+          showToast("Digite seu nome para continuar.");
+          return;
+        }
+        state.clientName = name;
+        saveClientName(name);
+        showBooking();
+      });
+
+      el.panelAccessButton.addEventListener("click", () => {
+        el.pinModal.classList.remove("hidden");
+        el.pinInput.focus();
+        refreshIcons();
+      });
+
+      el.closePinModalButton.addEventListener("click", () => {
+        el.pinModal.classList.add("hidden");
+      });
+
+      el.pinForm.addEventListener("submit", event => {
+        event.preventDefault();
+        if (el.pinInput.value === MANICURE_PIN) {
+          el.pinInput.value = "";
+          el.pinModal.classList.add("hidden");
+          showAdmin();
+          return;
+        }
+        showToast("PIN incorreto. Tente novamente com calma.");
+      });
+
+      el.backToClientButton.addEventListener("click", showBooking);
+      el.adminLogoutButton.addEventListener("click", showBooking);
+      el.newClientBookingButton.addEventListener("click", () => {
+        showBooking();
+        state.step = 1;
+        renderBooking();
+      });
+
+      el.adminSearchInput.addEventListener("input", event => {
+        state.adminSearch = event.target.value.trim().toLowerCase();
+        renderAdminAppointments();
+      });
+    }
+
+    function showLogin() {
+      el.loginView.classList.remove("hidden");
+      el.bookingView.classList.add("hidden");
+      el.clientScreen.classList.add("login-active");
+      el.clientView.classList.remove("hidden");
+      el.adminView.classList.add("hidden");
+      el.backToClientButton.classList.add("hidden");
+      el.clientNameInput.value = "";
+      el.clientNameInput.focus();
+      refreshIcons();
+    }
+
+    function showBooking() {
+      el.loginView.classList.add("hidden");
+      el.bookingView.classList.remove("hidden");
+      el.clientScreen.classList.remove("login-active");
+      el.clientView.classList.remove("hidden");
+      el.adminView.classList.add("hidden");
+      el.backToClientButton.classList.add("hidden");
+      el.clientGreeting.textContent = `Oi, ${state.clientName}! Escolha o melhor horário para cuidar das suas unhas`;
+      renderBooking();
+      loadClientAppointments();
+      refreshIcons();
+    }
+
+    function renderBooking() {
+      renderProgress();
+
+      if (state.step === 1) renderServiceStep();
+      if (state.step === 2) renderCalendarStep();
+      if (state.step === 3) renderTimeStep();
+      if (state.step === 4) renderConfirmationStep();
+
+      renderSupport();
+      refreshIcons();
+    }
+
+    function renderProgress() {
+      el.stepProgress.innerHTML = steps.map((label, index) => {
+        const number = index + 1;
+        const stateClass = number === state.step ? "active" : number < state.step ? "done" : "";
+        return `
+          <div class="step-dot ${stateClass}">
+            <span>${number}</span>
+            ${label}
+          </div>
+        `;
+      }).join("");
+    }
+
+    // Funções de serviços
+    function renderServiceStep() {
+      el.stepContent.innerHTML = `
+        <div class="step-header">
+          <div>
+            <h2>Escolha o serviço</h2>
+            <p>Comece pelo cuidado que você deseja reservar.</p>
+          </div>
+        </div>
+        <div class="services-grid">
+          ${services.map(service => `
+            <article class="service-card ${state.selectedService?.id === service.id ? "selected" : ""}">
+              <span class="service-icon"><i data-lucide="${service.icon}"></i></span>
+              <div>
+                <h3>${service.name}</h3>
+                <p>${service.description}</p>
+                <div class="service-meta">
+                  <span class="mini-pill">${money.format(service.price)}</span>
+                  <span class="mini-pill">${service.duration} min</span>
+                </div>
+              </div>
+              <button class="icon-button" type="button" aria-label="Selecionar ${service.name}" data-service="${service.id}">
+                <i data-lucide="chevron-right"></i>
+              </button>
+            </article>
+          `).join("")}
+        </div>
+      `;
+
+      el.stepContent.querySelectorAll("[data-service]").forEach(button => {
+        button.addEventListener("click", () => {
+          state.selectedService = services.find(service => service.id === button.dataset.service);
+          state.step = 2;
+          renderBooking();
+        });
+      });
+    }
+
+    // Funções do calendário
+    function renderCalendarStep() {
+      const current = new Date(state.calendarDate.getFullYear(), state.calendarDate.getMonth(), 1);
+      const firstWeekday = current.getDay();
+      const totalDays = new Date(current.getFullYear(), current.getMonth() + 1, 0).getDate();
+      const todayKey = toDateKey(startOfToday());
+      const cells = [];
+
+      for (let index = 0; index < firstWeekday; index += 1) {
+        cells.push(`<span class="day-button disabled" aria-hidden="true"></span>`);
+      }
+
+      for (let day = 1; day <= totalDays; day += 1) {
+        const date = new Date(current.getFullYear(), current.getMonth(), day);
+        const key = toDateKey(date);
+        const isPast = key < todayKey;
+        const classes = [
+          "day-button",
+          isPast ? "disabled" : "available",
+          key === todayKey ? "today" : "",
+          key === state.selectedDate ? "selected" : ""
+        ].join(" ");
+        cells.push(`
+          <button class="${classes}" type="button" ${isPast ? "disabled" : ""} data-day="${key}">
+            ${day}
+          </button>
+        `);
+      }
+
+      el.stepContent.innerHTML = `
+        <div class="step-header">
+          <div>
+            <h2>Escolha o melhor dia</h2>
+            <p>Os dias em rosa estão disponíveis para agendamento.</p>
+          </div>
+          <button class="button button-ghost" type="button" data-back-step="1">
+            <i data-lucide="arrow-left"></i>
+            Serviço
+          </button>
+        </div>
+        <div class="calendar-card">
+          <div class="calendar-head">
+            <button class="icon-button" type="button" data-month-change="-1" aria-label="Mês anterior">
+              <i data-lucide="chevron-left"></i>
+            </button>
+            <span class="calendar-title">${monthFormatter.format(current)}</span>
+            <button class="icon-button" type="button" data-month-change="1" aria-label="Próximo mês">
+              <i data-lucide="chevron-right"></i>
+            </button>
+          </div>
+          <div class="calendar-grid">
+            ${["D", "S", "T", "Q", "Q", "S", "S"].map(day => `<span class="weekday">${day}</span>`).join("")}
+            ${cells.join("")}
+          </div>
+        </div>
+        <div class="legend">
+          <span><b class="legend-dot"></b> Dias disponíveis</span>
+          <span><b class="legend-dot off"></b> Dias indisponíveis</span>
+        </div>
+      `;
+
+      el.stepContent.querySelectorAll("[data-month-change]").forEach(button => {
+        button.addEventListener("click", () => {
+          state.calendarDate = new Date(state.calendarDate.getFullYear(), state.calendarDate.getMonth() + Number(button.dataset.monthChange), 1);
+          renderBooking();
+        });
+      });
+
+      el.stepContent.querySelectorAll("[data-day]").forEach(button => {
+        button.addEventListener("click", async () => {
+          state.selectedDate = button.dataset.day;
+          state.selectedTime = "";
+          state.step = 3;
+          await loadBookedTimes(state.selectedDate);
+          renderBooking();
+        });
+      });
+
+      bindBackButtons();
+    }
+
+    // Funções de agendamento
+    async function loadBookedTimes(dateKey) {
+      state.bookedTimes = new Set();
+      if (!db) return;
+
+      try {
+        const bookedQuery = query(collection(db, "appointments"), where("date", "==", dateKey));
+        const snapshot = await getDocs(bookedQuery);
+        snapshot.forEach(item => {
+          const data = item.data();
+          if (data.status === "confirmed") {
+            state.bookedTimes.add(data.time);
+          }
+        });
+      } catch (error) {
+        console.error(error);
+        showToast("Não foi possível consultar os horários. Confira o Firebase.");
+      }
+    }
+
+    function renderTimeStep() {
+      el.stepContent.innerHTML = `
+        <div class="step-header">
+          <div>
+            <h2>Escolha o horário</h2>
+            <p>${formatFriendlyDate(state.selectedDate)} está esperando por você.</p>
+          </div>
+          <button class="button button-ghost" type="button" data-back-step="2">
+            <i data-lucide="arrow-left"></i>
+            Dia
+          </button>
+        </div>
+        <div class="times-grid">
+          ${times.map(time => {
+            const busy = state.bookedTimes.has(time);
+            const selected = state.selectedTime === time;
+            return `
+              <button class="time-button ${busy ? "busy" : ""} ${selected ? "selected" : ""}" type="button" ${busy ? "disabled" : ""} data-time="${time}">
+                ${time}
+              </button>
+            `;
+          }).join("")}
+        </div>
+        <div class="notice" style="margin-top: 1rem;">
+          <i data-lucide="shield-check"></i>
+          <span>Seu horário só será reservado depois da confirmação.</span>
+        </div>
+      `;
+
+      el.stepContent.querySelectorAll("[data-time]").forEach(button => {
+        button.addEventListener("click", () => {
+          state.selectedTime = button.dataset.time;
+          state.step = 4;
+          renderBooking();
+        });
+      });
+
+      bindBackButtons();
+    }
+
+    function renderConfirmationStep() {
+      el.stepContent.innerHTML = `
+        <div class="step-header">
+          <div>
+            <h2>Confirme seu agendamento</h2>
+            <p>Confira os detalhes antes de reservar seu horário.</p>
+          </div>
+          <button class="button button-ghost" type="button" data-back-step="3">
+            <i data-lucide="arrow-left"></i>
+            Horário
+          </button>
+        </div>
+        <ul class="summary-list">
+          <li><span>Cliente</span><strong>${state.clientName}</strong></li>
+          <li><span>Serviço</span><strong>${state.selectedService.name}</strong></li>
+          <li><span>Data</span><strong>${formatFriendlyDate(state.selectedDate)}</strong></li>
+          <li><span>Horário</span><strong>${state.selectedTime}</strong></li>
+          <li><span>Valor</span><strong>${money.format(state.selectedService.price)}</strong></li>
+        </ul>
+        <button class="button button-primary" id="confirmAppointmentButton" type="button" style="width: 100%;">
+          <i data-lucide="check"></i>
+          Confirmar agendamento
+        </button>
+      `;
+
+      el.stepContent.querySelector("#confirmAppointmentButton").addEventListener("click", confirmAppointment);
+      bindBackButtons();
+    }
+
+    async function confirmAppointment() {
+      if (!db) {
+        showToast("Insira suas credenciais reais do Firebase para salvar o agendamento.");
+        return;
+      }
+
+      try {
+        await loadBookedTimes(state.selectedDate);
+        if (state.bookedTimes.has(state.selectedTime)) {
+          state.step = 3;
+          renderBooking();
+          showToast("Esse horário acabou de ser reservado. Escolha outro com carinho.");
+          return;
+        }
+
+        await addDoc(collection(db, "appointments"), {
+          clientName: state.clientName,
+          serviceId: state.selectedService.id,
+          serviceName: state.selectedService.name,
+          servicePrice: state.selectedService.price,
+          serviceDuration: state.selectedService.duration,
+          date: state.selectedDate,
+          time: state.selectedTime,
+          status: "confirmed",
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+          source: "client_lp"
+        });
+
+        renderSuccess();
+        await loadClientAppointments();
+      } catch (error) {
+        console.error(error);
+        showToast("Não foi possível salvar o agendamento. Confira as regras e credenciais do Firebase.");
+      }
+    }
+
+    function renderSuccess() {
+      el.stepProgress.innerHTML = steps.map((label, index) => `
+        <div class="step-dot done">
+          <span>${index + 1}</span>
+          ${label}
+        </div>
+      `).join("");
+
+      el.stepContent.innerHTML = `
+        <div style="text-align: center;">
+          <div class="success-mark"><i data-lucide="check"></i></div>
+          <h2>Tudo certo, ${state.clientName}!</h2>
+          <p class="muted">Seu horário foi reservado com carinho.</p>
+        </div>
+        <ul class="summary-list">
+          <li><span>Serviço</span><strong>${state.selectedService.name}</strong></li>
+          <li><span>Data</span><strong>${formatFriendlyDate(state.selectedDate)}</strong></li>
+          <li><span>Horário</span><strong>${state.selectedTime}</strong></li>
+          <li><span>Valor</span><strong>${money.format(state.selectedService.price)}</strong></li>
+        </ul>
+        <button class="button button-primary" type="button" id="restartBookingButton" style="width: 100%;">
+          <i data-lucide="calendar-plus"></i>
+          Fazer outro agendamento
+        </button>
+      `;
+
+      el.stepContent.querySelector("#restartBookingButton").addEventListener("click", () => {
+        state.step = 1;
+        state.selectedService = null;
+        state.selectedDate = "";
+        state.selectedTime = "";
+        renderBooking();
+      });
+
+      renderSupport();
+      refreshIcons();
+    }
+
+    function bindBackButtons() {
+      el.stepContent.querySelectorAll("[data-back-step]").forEach(button => {
+        button.addEventListener("click", () => {
+          state.step = Number(button.dataset.backStep);
+          renderBooking();
+        });
+      });
+    }
+
+    function renderSupport() {
+      const service = state.selectedService;
+      el.supportContent.innerHTML = `
+        <div class="section-title">
+          <span class="status-pill"><i data-lucide="heart"></i> Seu momento</span>
+          <h2>Resumo</h2>
+          <p>Escolha cada detalhe com calma. O agendamento fica confirmado apenas no último passo.</p>
+        </div>
+        <ul class="summary-list">
+          <li><span>Cliente</span><strong>${state.clientName || "Não informado"}</strong></li>
+          <li><span>Serviço</span><strong>${service ? service.name : "A escolher"}</strong></li>
+          <li><span>Data</span><strong>${state.selectedDate ? formatFriendlyDate(state.selectedDate) : "A escolher"}</strong></li>
+          <li><span>Horário</span><strong>${state.selectedTime || "A escolher"}</strong></li>
+        </ul>
+        <div class="notice">
+          <i data-lucide="sparkles"></i>
+          <span>Escolha o melhor momento para cuidar de você.</span>
+        </div>
+      `;
+    }
+
+    async function loadClientAppointments() {
+      state.clientAppointments = [];
+
+      if (!db || !state.clientName) {
+        renderClientAppointments();
+        return;
+      }
+
+      try {
+        const clientQuery = query(collection(db, "appointments"), where("clientName", "==", state.clientName));
+        const snapshot = await getDocs(clientQuery);
+        const todayKey = toDateKey(startOfToday());
+        const items = [];
+
+        snapshot.forEach(item => {
+          const data = item.data();
+          if (data.date >= todayKey && data.status !== "cancelled") {
+            items.push({ id: item.id, ...data });
+          }
+        });
+
+        state.clientAppointments = items.sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
+        renderClientAppointments();
+      } catch (error) {
+        console.error(error);
+        showToast("Não foi possível carregar seus agendamentos.");
+        renderClientAppointments();
+      }
+    }
+
+    function renderClientAppointments() {
+      if (!db) {
+        el.clientAppointmentsList.innerHTML = `
+          <div class="empty-state">
+            <i data-lucide="cloud-off"></i>
+            <strong>Firebase ainda não configurado</strong>
+            <span>Depois de inserir as credenciais, seus próximos horários aparecerão aqui.</span>
+          </div>
+        `;
+        refreshIcons();
+        return;
+      }
+
+      if (!state.clientAppointments.length) {
+        el.clientAppointmentsList.innerHTML = `
+          <div class="empty-state">
+            <i data-lucide="calendar-heart"></i>
+            <strong>Nenhum horário futuro por enquanto</strong>
+            <span>Quando você confirmar um agendamento, ele ficará guardado aqui.</span>
+          </div>
+        `;
+        refreshIcons();
+        return;
+      }
+
+      el.clientAppointmentsList.innerHTML = state.clientAppointments.map(appointment => {
+        const date = fromDateKey(appointment.date);
+        return `
+          <article class="appointment-card">
+            <div class="date-badge">
+              <span>${String(date.getDate()).padStart(2, "0")}</span>
+              <small>${date.toLocaleDateString("pt-BR", { month: "short" })}</small>
+            </div>
+            <div>
+              <strong>${appointment.time} · ${appointment.serviceName}</strong>
+              <p class="muted" style="margin: 0.25rem 0;">${formatFriendlyDate(appointment.date)}</p>
+              <span class="status ${appointment.status}">${getStatusLabel(appointment.status)}</span>
+            </div>
+          </article>
+        `;
+      }).join("");
+      refreshIcons();
+    }
+
+    // Funções do painel da manicure
+    function showAdmin() {
+      el.clientView.classList.add("hidden");
+      el.adminView.classList.remove("hidden");
+      el.backToClientButton.classList.remove("hidden");
+
+      if (!db) {
+        showToast("Configure o Firebase para carregar o painel da manicure.");
+        state.adminAppointments = [];
+        renderAdmin();
+        return;
+      }
+
+      if (state.unsubscribeAdmin) {
+        state.unsubscribeAdmin();
+      }
+
+      state.unsubscribeAdmin = onSnapshot(collection(db, "appointments"), snapshot => {
+        state.adminAppointments = snapshot.docs.map(item => ({ id: item.id, ...item.data() }));
+        renderAdmin();
+      }, error => {
+        console.error(error);
+        showToast("Não foi possível acompanhar os agendamentos em tempo real.");
+      });
+
+      renderAdmin();
+      refreshIcons();
+    }
+
+    function renderAdmin() {
+      renderMetrics();
+      renderFilters();
+      renderAdminAppointments();
+      refreshIcons();
+    }
+
+    function filterByPeriod(items) {
+      const today = startOfToday();
+      const todayKey = toDateKey(today);
+      const weekEnd = new Date(today);
+      weekEnd.setDate(today.getDate() + 6);
+      const weekEndKey = toDateKey(weekEnd);
+      const monthStart = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-01`;
+      const monthEnd = toDateKey(new Date(today.getFullYear(), today.getMonth() + 1, 0));
+
+      return items.filter(item => {
+        if (state.adminFilter === "today") return item.date === todayKey;
+        if (state.adminFilter === "week") return item.date >= todayKey && item.date <= weekEndKey;
+        if (state.adminFilter === "month") return item.date >= monthStart && item.date <= monthEnd;
+        return true;
+      });
+    }
+
+    function renderMetrics() {
+      const todayKey = toDateKey(startOfToday());
+      const today = state.adminAppointments.filter(item => item.date === todayKey && item.status !== "cancelled");
+      const week = filterByPeriodWithKey("week").filter(item => item.status !== "cancelled");
+      const month = filterByPeriodWithKey("month").filter(item => item.status !== "cancelled");
+      const clients = new Set(state.adminAppointments.filter(item => item.status !== "cancelled").map(item => item.clientName.toLowerCase()));
+      const revenue = month.reduce((sum, item) => sum + Number(item.servicePrice || 0), 0);
+
+      const metrics = [
+        { label: "Hoje", value: today.length, detail: "agendamentos" },
+        { label: "Esta semana", value: week.length, detail: "agendamentos" },
+        { label: "Clientes", value: clients.size, detail: "agendadas" },
+        { label: "Faturamento", value: money.format(revenue), detail: "este mês" }
+      ];
+
+      el.metricsGrid.innerHTML = metrics.map(metric => `
+        <article class="card metric">
+          <span>${metric.label}</span>
+          <strong>${metric.value}</strong>
+          <small class="muted">${metric.detail}</small>
+        </article>
+      `).join("");
+    }
+
+    function filterByPeriodWithKey(filterKey) {
+      const original = state.adminFilter;
+      state.adminFilter = filterKey;
+      const result = filterByPeriod(state.adminAppointments);
+      state.adminFilter = original;
+      return result;
+    }
+
+    function renderFilters() {
+      const filters = [
+        { key: "today", label: "Hoje" },
+        { key: "week", label: "Esta semana" },
+        { key: "month", label: "Este mês" },
+        { key: "all", label: "Todos" }
+      ];
+
+      el.filterTabs.innerHTML = filters.map(filter => `
+        <button class="${state.adminFilter === filter.key ? "active" : ""}" type="button" data-filter="${filter.key}">
+          ${filter.label}
+        </button>
+      `).join("");
+
+      el.filterTabs.querySelectorAll("[data-filter]").forEach(button => {
+        button.addEventListener("click", () => {
+          state.adminFilter = button.dataset.filter;
+          renderAdmin();
+        });
+      });
+    }
+
+    function renderAdminAppointments() {
+      const filtered = filterByPeriod(state.adminAppointments)
+        .filter(item => !state.adminSearch || item.clientName.toLowerCase().includes(state.adminSearch))
+        .sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
+
+      if (!db) {
+        el.adminAppointmentsList.innerHTML = `
+          <div class="empty-state">
+            <i data-lucide="cloud-off"></i>
+            <strong>Firebase ainda não configurado</strong>
+            <span>Insira as credenciais para ver os agendamentos reais.</span>
+          </div>
+        `;
+        refreshIcons();
+        return;
+      }
+
+      if (!filtered.length) {
+        el.adminAppointmentsList.innerHTML = `
+          <div class="empty-state">
+            <i data-lucide="calendar-search"></i>
+            <strong>Nenhum agendamento encontrado</strong>
+            <span>A lista aparecerá assim que houver horários no período escolhido.</span>
+          </div>
+        `;
+        refreshIcons();
+        return;
+      }
+
+      el.adminAppointmentsList.innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>Horário</th>
+              <th>Data</th>
+              <th>Cliente</th>
+              <th>Serviço</th>
+              <th>Valor</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${filtered.map(item => `
+              <tr>
+                <td>${item.time}</td>
+                <td>${formatFriendlyDate(item.date)}</td>
+                <td>${item.clientName}</td>
+                <td>${item.serviceName}</td>
+                <td>${money.format(Number(item.servicePrice || 0))}</td>
+                <td><span class="status ${item.status}">${getStatusLabel(item.status)}</span></td>
+                <td>
+                  <div class="actions">
+                    <button type="button" title="Confirmar" data-action="confirmed" data-id="${item.id}"><i data-lucide="check"></i></button>
+                    <button type="button" title="Cancelar" data-action="cancelled" data-id="${item.id}"><i data-lucide="x"></i></button>
+                    <button type="button" title="Concluir" data-action="done" data-id="${item.id}"><i data-lucide="badge-check"></i></button>
+                    <button type="button" title="Excluir" data-action="delete" data-id="${item.id}"><i data-lucide="trash-2"></i></button>
+                  </div>
+                </td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+
+      el.adminAppointmentsList.querySelectorAll("[data-action]").forEach(button => {
+        button.addEventListener("click", () => handleAdminAction(button.dataset.id, button.dataset.action));
+      });
+
+      refreshIcons();
+    }
+
+    async function handleAdminAction(id, action) {
+      if (!db) return;
+
+      try {
+        if (action === "delete") {
+          const confirmed = window.confirm("Deseja excluir este agendamento?");
+          if (!confirmed) return;
+          await deleteDoc(doc(db, "appointments", id));
+          showToast("Agendamento excluído.");
+          return;
+        }
+
+        await updateDoc(doc(db, "appointments", id), {
+          status: action,
+          updatedAt: serverTimestamp()
+        });
+        showToast("Agendamento atualizado.");
+      } catch (error) {
+        console.error(error);
+        showToast("Não foi possível atualizar o agendamento.");
+      }
+    }
+
+    boot();
+  </script>
+</body>
+</html>
