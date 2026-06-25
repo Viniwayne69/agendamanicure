@@ -168,7 +168,7 @@
       gap: 0.75rem;
       align-items: center;
       justify-content: space-between;
-      max-width: 70rem;
+      max-width: 90rem;
       margin: 0 auto 1rem;
       padding: 0.75rem;
       border: 1px solid rgba(185, 111, 98, 0.14);
@@ -253,7 +253,7 @@
     }
 
     .screen {
-      max-width: 70rem;
+      max-width: 82rem;
       margin: 0 auto;
     }
 
@@ -806,13 +806,15 @@
     }
 
     .panel-screen {
-      max-width: 72rem;
+      width: 100%;
+      max-width: 90rem;
       margin: 0 auto;
     }
 
     .panel-shell {
       display: grid;
       gap: 1rem;
+      align-items: start;
     }
 
     .panel-sidebar {
@@ -873,7 +875,7 @@
       gap: 1rem;
       align-items: flex-start;
       justify-content: space-between;
-      padding: 1rem;
+      padding: clamp(1rem, 2vw, 1.35rem);
     }
 
     .panel-title h1 {
@@ -882,12 +884,15 @@
 
     .metrics-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.75rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(0.75rem, 1.2vw, 1rem);
     }
 
     .metric {
-      padding: 1rem;
+      min-height: 8.2rem;
+      padding: clamp(1rem, 1.8vw, 1.35rem);
+      display: grid;
+      align-content: center;
     }
 
     .metric span {
@@ -907,7 +912,7 @@
     .panel-tools {
       display: grid;
       gap: 0.7rem;
-      padding: 1rem;
+      padding: clamp(1rem, 2vw, 1.35rem);
     }
 
     .filter-tabs {
@@ -1105,15 +1110,42 @@
       }
 
       .panel-shell {
-        grid-template-columns: 14rem 1fr;
+        grid-template-columns: minmax(14rem, 16rem) minmax(0, 1fr);
+        gap: 1.25rem;
       }
 
       .panel-sidebar {
         min-height: 32rem;
+        position: sticky;
+        top: 1.6rem;
       }
 
       .panel-menu {
         display: grid;
+      }
+    }
+
+    @media (min-width: 1360px) {
+      .main-area {
+        padding: 1.6rem 2rem;
+      }
+
+      .topbar,
+      .panel-screen {
+        max-width: min(100%, 96rem);
+      }
+
+      .screen {
+        max-width: min(100%, 90rem);
+      }
+
+      .panel-shell {
+        grid-template-columns: minmax(15rem, 17rem) minmax(0, 1fr);
+        gap: 1.35rem;
+      }
+
+      .panel-section {
+        gap: 1.15rem;
       }
     }
 
