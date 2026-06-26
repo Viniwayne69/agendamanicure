@@ -10,7 +10,7 @@
   <link rel="apple-touch-icon" href="/icon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
     /* CSS da identidade visual */
@@ -26,10 +26,10 @@
       margin: 0;
       min-height: 100vh;
       color: #38211d;
-      font-family: "Poppins", Arial, sans-serif;
+      font-family: "Open Sans", Arial, sans-serif;
       background:
-        radial-gradient(circle at top left, rgba(226, 145, 153, 0.25), transparent 34rem),
-        linear-gradient(135deg, #fff8f4 0%, #f7e8df 42%, #fffdf9 100%);
+        radial-gradient(circle at 20% 0, rgba(221, 151, 143, 0.16), transparent 28rem),
+        linear-gradient(180deg, #fffaf7 0%, #f4e8e1 100%);
     }
 
     button,
@@ -82,7 +82,7 @@
     .logo-script {
       margin: 0;
       color: #b96f62;
-      font-family: "Playfair Display", Georgia, serif;
+      font-family: "Open Sans", Arial, sans-serif;
       font-size: clamp(3.2rem, 7vw, 5.6rem);
       font-weight: 500;
       line-height: 0.9;
@@ -104,7 +104,7 @@
 
     .rail-copy h2 {
       margin: 0 0 0.6rem;
-      font-family: "Playfair Display", Georgia, serif;
+      font-family: "Open Sans", Arial, sans-serif;
       font-size: 1.65rem;
       font-weight: 600;
     }
@@ -182,7 +182,7 @@
       display: flex;
       flex-direction: column;
       color: #b96f62;
-      font-family: "Playfair Display", Georgia, serif;
+      font-family: "Open Sans", Arial, sans-serif;
       font-size: 1.6rem;
       line-height: 1;
     }
@@ -190,7 +190,7 @@
     .mobile-logo span {
       margin-top: 0.15rem;
       color: #b9857b;
-      font-family: "Poppins", Arial, sans-serif;
+      font-family: "Open Sans", Arial, sans-serif;
       font-size: 0.62rem;
       font-weight: 600;
       letter-spacing: 0.34em;
@@ -211,10 +211,10 @@
       justify-content: center;
       gap: 0.45rem;
       padding: 0.72rem 1rem;
-      color: #803b36;
-      border: 1px solid rgba(185, 111, 98, 0.28);
+      color: #7a453e;
+      border: 1px solid rgba(114, 69, 61, 0.16);
       border-radius: 0.85rem;
-      background: #fffaf7;
+      background: rgba(255, 253, 250, 0.82);
       text-decoration: none;
       transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
     }
@@ -232,7 +232,7 @@
     }
 
     .button-ghost {
-      background: rgba(255, 252, 249, 0.62);
+      background: rgba(255, 253, 250, 0.7);
     }
 
     .button-soft {
@@ -264,11 +264,11 @@
     }
 
     .card {
-      border: 1px solid rgba(185, 111, 98, 0.14);
+      border: 1px solid rgba(95, 58, 51, 0.08);
       border-radius: 1.2rem;
-      background: rgba(255, 252, 249, 0.9);
-      box-shadow: 0 1.3rem 3.2rem rgba(82, 43, 36, 0.08);
-      backdrop-filter: blur(18px);
+      background: rgba(255, 253, 250, 0.94);
+      box-shadow: 0 1.4rem 3rem rgba(70, 43, 37, 0.07);
+      backdrop-filter: blur(14px);
     }
 
     .login-card {
@@ -286,7 +286,7 @@
       width: fit-content;
       margin: 0 auto;
       color: #b96f62;
-      font-family: "Playfair Display", Georgia, serif;
+      font-family: "Open Sans", Arial, sans-serif;
       font-size: clamp(3.2rem, 12vw, 4.25rem);
       line-height: 0.9;
     }
@@ -298,7 +298,7 @@
     .panel-title h1 {
       margin: 0;
       color: #2f1c19;
-      font-family: "Playfair Display", Georgia, serif;
+      font-family: "Open Sans", Arial, sans-serif;
       font-weight: 600;
       letter-spacing: 0;
     }
@@ -425,7 +425,7 @@
     }
 
     .progress-card {
-      display: grid;
+      display: none;
       gap: 0.65rem;
       padding: 1rem;
     }
@@ -486,6 +486,34 @@
       margin-bottom: 1rem;
     }
 
+    .service-desktop-intro {
+      display: none;
+    }
+
+    .service-mobile-intro {
+      display: grid;
+      justify-items: center;
+      gap: 0.45rem;
+      max-width: 34rem;
+      margin: 0.4rem auto 1.65rem;
+      text-align: center;
+    }
+
+    .service-mobile-intro strong {
+      color: #2f211f;
+      font-size: clamp(1.2rem, 1.7vw, 1.65rem);
+      font-weight: 800;
+      line-height: 1.22;
+    }
+
+    .service-mobile-intro span {
+      max-width: 26rem;
+      color: #2f211f;
+      font-size: clamp(0.9rem, 1.05vw, 1.05rem);
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
     .step-card h2 {
       font-size: clamp(1.55rem, 5vw, 2.2rem);
     }
@@ -504,18 +532,20 @@
       grid-template-columns: 3rem 1fr auto;
       gap: 0.8rem;
       align-items: center;
-      padding: 0.85rem;
-      border: 1px solid rgba(185, 111, 98, 0.16);
-      border-radius: 1rem;
-      background: #fffaf7;
-      transition: border 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+      padding: 0.9rem;
+      border: 1px solid rgba(95, 58, 51, 0.08);
+      border-radius: 0.95rem;
+      background: rgba(255, 254, 252, 0.88);
+      box-shadow: 0 0.65rem 1.6rem rgba(76, 46, 40, 0.045);
+      transition: border 180ms ease, transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
     }
 
     .service-card:hover,
     .service-card.selected {
       transform: translateY(-1px);
-      border-color: rgba(216, 120, 138, 0.56);
-      box-shadow: 0 1rem 2.4rem rgba(125, 65, 57, 0.1);
+      border-color: rgba(159, 83, 78, 0.22);
+      background: #fff;
+      box-shadow: 0 1rem 2.2rem rgba(82, 49, 43, 0.08);
     }
 
     .service-icon {
@@ -523,14 +553,16 @@
       width: 3rem;
       height: 3rem;
       place-items: center;
-      color: #b96f62;
-      border-radius: 0.95rem;
-      background: #fff0ec;
+      color: #a45b52;
+      border-radius: 0.85rem;
+      background: linear-gradient(180deg, rgba(255, 245, 241, 0.9), rgba(255, 250, 247, 0.9));
     }
 
     .service-card h3 {
       margin: 0 0 0.2rem;
+      color: #2f211f;
       font-size: 0.98rem;
+      font-weight: 800;
     }
 
     .service-card p {
@@ -543,19 +575,37 @@
     .service-meta {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.35rem;
-      margin-top: 0.45rem;
+      gap: 0.5rem;
+      margin-top: 0.36rem;
+      color: #865d57;
     }
 
     .mini-pill {
       display: inline-flex;
       align-items: center;
-      padding: 0.25rem 0.45rem;
-      color: #81443c;
+      position: relative;
+      padding: 0;
+      color: inherit;
       border-radius: 999px;
-      background: #fff0eb;
-      font-size: 0.7rem;
+      background: transparent;
+      font-size: 0.72rem;
       font-weight: 700;
+    }
+
+    .service-meta .mini-pill + .mini-pill {
+      padding-left: 0.62rem;
+    }
+
+    .service-meta .mini-pill + .mini-pill::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 0.22rem;
+      height: 0.22rem;
+      border-radius: 50%;
+      background: rgba(134, 93, 87, 0.56);
+      transform: translateY(-50%);
     }
 
     .calendar-card {
@@ -586,9 +636,9 @@
       height: 2.45rem;
       place-items: center;
       color: #9c5148;
-      border: 1px solid rgba(185, 111, 98, 0.2);
+      border: 1px solid rgba(95, 58, 51, 0.11);
       border-radius: 0.75rem;
-      background: #fffaf7;
+      background: rgba(255, 253, 250, 0.78);
     }
 
     .calendar-grid {
@@ -1083,7 +1133,12 @@
       }
 
       .mobile-logo {
-        font-size: 1.25rem;
+        font-size: 1.72rem;
+      }
+
+      .mobile-logo span {
+        font-size: 0.66rem;
+        letter-spacing: 0.36em;
       }
 
       .topbar-actions {
@@ -1118,7 +1173,6 @@
       }
 
       .hero-strip,
-      .progress-card,
       #supportContent {
         display: none;
       }
@@ -1158,6 +1212,26 @@
       .step-header .button {
         min-height: 2.45rem;
         padding: 0.62rem 0.78rem;
+      }
+
+      .service-desktop-intro {
+        display: none;
+      }
+
+      .service-mobile-intro {
+        gap: 0.34rem;
+        max-width: 16rem;
+        margin: 0.2rem auto 1.1rem;
+      }
+
+      .service-mobile-intro strong {
+        font-size: 0.98rem;
+      }
+
+      .service-mobile-intro span {
+        max-width: 14rem;
+        font-size: 0.78rem;
+        line-height: 1.35;
       }
 
       .services-grid {
@@ -1269,15 +1343,24 @@
         padding: 1.4rem;
       }
 
+      .client-layout {
+        gap: 1rem;
+      }
+
+      .step-card {
+        padding: clamp(1.25rem, 2vw, 1.65rem);
+      }
+
       .hero-strip {
-        grid-template-columns: 1.2fr 0.8fr;
-        align-items: center;
-        padding: 1.4rem;
+        display: none;
       }
 
       .work-area {
-        grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr);
-        align-items: start;
+        display: block;
+      }
+
+      #supportContent {
+        display: none;
       }
 
       .times-grid {
@@ -1523,7 +1606,7 @@
               <section class="card panel-tools">
                 <div class="step-header">
                   <div>
-                    <h2 style="margin: 0; font-family: 'Playfair Display', Georgia, serif;">Resumo do dia</h2>
+                    <h2 style="margin: 0; font-family: 'Open Sans', Arial, sans-serif;">Resumo do dia</h2>
                     <p class="muted" style="margin: 0.25rem 0 0;">Os próximos horários de hoje aparecem aqui para você acompanhar com calma.</p>
                   </div>
                 </div>
@@ -1534,7 +1617,7 @@
             <section class="card panel-tools panel-section hidden" id="appointmentsSection">
               <div class="step-header">
                 <div>
-                  <h2 style="margin: 0; font-family: 'Playfair Display', Georgia, serif;">Lista de agendamentos</h2>
+                  <h2 style="margin: 0; font-family: 'Open Sans', Arial, sans-serif;">Lista de agendamentos</h2>
                   <p class="muted" style="margin: 0.25rem 0 0;">Filtre por período e encontre clientes pelo nome.</p>
                 </div>
               </div>
@@ -1552,7 +1635,7 @@
             <section class="card panel-tools panel-section hidden" id="clientsSection">
               <div class="step-header">
                 <div>
-                  <h2 style="margin: 0; font-family: 'Playfair Display', Georgia, serif;">Clientes</h2>
+                  <h2 style="margin: 0; font-family: 'Open Sans', Arial, sans-serif;">Clientes</h2>
                   <p class="muted" style="margin: 0.25rem 0 0;">Uma visão simples das clientes que já apareceram na agenda.</p>
                 </div>
               </div>
@@ -1562,7 +1645,7 @@
             <section class="card panel-tools panel-section hidden" id="settingsSection">
               <div class="step-header">
                 <div>
-                  <h2 style="margin: 0; font-family: 'Playfair Display', Georgia, serif;">Ajustes</h2>
+                  <h2 style="margin: 0; font-family: 'Open Sans', Arial, sans-serif;">Ajustes</h2>
                   <p class="muted" style="margin: 0.25rem 0 0;">Configurações rápidas desta versão da agenda.</p>
                 </div>
               </div>
@@ -1579,7 +1662,7 @@
     <div class="card modal-card">
       <span class="icon-bubble" style="margin: 0 auto;"><i data-lucide="lock"></i></span>
       <div>
-        <h2 id="pinTitle" style="margin: 0; font-family: 'Playfair Display', Georgia, serif;">Painel da Manicure</h2>
+        <h2 id="pinTitle" style="margin: 0; font-family: 'Open Sans', Arial, sans-serif;">Painel da Manicure</h2>
         <p class="muted" style="margin: 0.4rem 0 0;">Acesso restrito para acompanhar e cuidar da agenda.</p>
       </div>
       <form id="pinForm">
@@ -1992,11 +2075,15 @@
     // Funções de serviços
     function renderServiceStep() {
       el.stepContent.innerHTML = `
-        <div class="step-header">
+        <div class="step-header service-desktop-intro">
           <div>
             <h2>Escolha o serviço</h2>
             <p>Comece pelo cuidado que você deseja reservar.</p>
           </div>
+        </div>
+        <div class="service-mobile-intro">
+          <strong>Oi, ${state.clientName}! 💅</strong>
+          <span>Escolha o serviço que você deseja agendar</span>
         </div>
         <div class="services-grid">
           ${services.map(service => `
