@@ -1460,9 +1460,13 @@
         width: 2.25rem;
       }
 
-      .step-header,
+      .step-header:not(.service-desktop-intro),
       .panel-title {
         display: grid;
+      }
+
+      .service-desktop-intro {
+        display: none;
       }
 
       .summary-list li {
