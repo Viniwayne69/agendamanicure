@@ -750,6 +750,10 @@
       margin-top: 1rem;
     }
 
+    .client-appointments-toggle {
+      display: none;
+    }
+
     .appointment-card {
       display: grid;
       grid-template-columns: auto 1fr;
@@ -1060,6 +1064,206 @@
       text-align: center;
     }
 
+    @media (max-width: 679px) {
+      body {
+        background:
+          radial-gradient(circle at 50% 0, rgba(226, 145, 153, 0.18), transparent 18rem),
+          linear-gradient(180deg, #fff8f4 0%, #f8ebe4 100%);
+      }
+
+      .main-area {
+        padding: 0.75rem;
+      }
+
+      .topbar {
+        max-width: 25rem;
+        margin-bottom: 0.75rem;
+        padding: 0.6rem;
+        border-radius: 1rem;
+      }
+
+      .mobile-logo {
+        font-size: 1.25rem;
+      }
+
+      .topbar-actions {
+        gap: 0.45rem;
+      }
+
+      .screen,
+      .client-layout {
+        width: min(100%, 25rem);
+        margin: 0 auto;
+      }
+
+      .screen.login-active {
+        min-height: calc(100vh - 5.3rem);
+        align-items: center;
+      }
+
+      .login-card {
+        width: 100%;
+        min-height: min(39rem, calc(100vh - 6rem));
+        gap: 1.25rem;
+        padding: 2rem 1.45rem;
+        border-radius: 1.15rem;
+      }
+
+      .login-mark {
+        font-size: 3.25rem;
+      }
+
+      .login-card h1 {
+        font-size: clamp(2.2rem, 10vw, 3.05rem);
+      }
+
+      .hero-strip,
+      .progress-card,
+      #supportContent {
+        display: none;
+      }
+
+      .client-layout {
+        gap: 0.75rem;
+      }
+
+      .work-area {
+        display: block;
+      }
+
+      .step-card {
+        min-height: calc(100vh - 6.7rem);
+        padding: 1.15rem;
+        border-radius: 1.1rem;
+      }
+
+      .step-header {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 0.8rem;
+        align-items: start;
+        margin-bottom: 1rem;
+      }
+
+      .step-header h2 {
+        font-size: clamp(1.65rem, 8vw, 2.25rem);
+        line-height: 1.12;
+      }
+
+      .step-header p {
+        font-size: 0.88rem;
+        line-height: 1.5;
+      }
+
+      .step-header .button {
+        min-height: 2.45rem;
+        padding: 0.62rem 0.78rem;
+      }
+
+      .services-grid {
+        gap: 0.65rem;
+      }
+
+      .service-card {
+        grid-template-columns: 2.75rem minmax(0, 1fr) auto;
+        gap: 0.65rem;
+        padding: 0.72rem;
+        border-radius: 0.85rem;
+      }
+
+      .service-icon {
+        width: 2.75rem;
+        height: 2.75rem;
+        border-radius: 0.75rem;
+      }
+
+      .service-card h3 {
+        font-size: 0.86rem;
+      }
+
+      .service-card p {
+        display: none;
+      }
+
+      .service-meta {
+        margin-top: 0.25rem;
+      }
+
+      .service-card .icon-button {
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: 0.68rem;
+      }
+
+      .client-appointments-toggle {
+        display: inline-flex;
+        width: 100%;
+        margin-top: 0.85rem;
+      }
+
+      #clientAppointments {
+        display: none;
+      }
+
+      #clientAppointments.appointments-open {
+        display: grid;
+      }
+
+      .appointments-section {
+        min-height: calc(100vh - 6.7rem);
+        padding: 1.15rem;
+        border-radius: 1.1rem;
+      }
+
+      .appointments-section .section-title h2 {
+        font-size: clamp(1.65rem, 8vw, 2.25rem);
+      }
+
+      .calendar-card {
+        border-radius: 0.9rem;
+      }
+
+      .calendar-head {
+        padding: 0.75rem;
+      }
+
+      .calendar-grid {
+        gap: 0.28rem;
+        padding: 0.75rem;
+      }
+
+      .weekday,
+      .day-button {
+        min-height: 2.05rem;
+        border-radius: 999px;
+        font-size: 0.76rem;
+      }
+
+      .legend {
+        justify-content: center;
+      }
+
+      .times-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.55rem;
+      }
+
+      .time-button {
+        min-height: 2.8rem;
+        border-radius: 0.75rem;
+        font-size: 0.85rem;
+      }
+
+      .summary-list li,
+      .appointment-card {
+        border-radius: 0.8rem;
+      }
+
+      .notice {
+        border-radius: 0.85rem;
+      }
+    }
+
     @media (min-width: 680px) {
       .main-area {
         padding: 1.4rem;
@@ -1165,12 +1369,12 @@
       }
 
       .service-card {
-        grid-template-columns: 2.7rem 1fr;
+        grid-template-columns: 2.75rem minmax(0, 1fr) auto;
       }
 
       .service-card .icon-button {
-        grid-column: 1 / -1;
-        width: 100%;
+        grid-column: auto;
+        width: 2.25rem;
       }
 
       .step-header,
@@ -1812,6 +2016,10 @@
             </article>
           `).join("")}
         </div>
+        <button class="button button-ghost client-appointments-toggle" id="showClientAppointmentsButton" type="button">
+          <i data-lucide="calendar-heart"></i>
+          Ver meus agendamentos
+        </button>
       `;
 
       el.stepContent.querySelectorAll("[data-service]").forEach(button => {
@@ -1820,6 +2028,12 @@
           state.step = 2;
           renderBooking();
         });
+      });
+
+      el.stepContent.querySelector("#showClientAppointmentsButton")?.addEventListener("click", async () => {
+        await loadClientAppointments();
+        document.querySelector("#clientAppointments")?.classList.add("appointments-open");
+        document.querySelector("#clientAppointments")?.scrollIntoView({ behavior: "smooth", block: "start" });
       });
     }
 
