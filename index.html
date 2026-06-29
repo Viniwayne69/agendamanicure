@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nail Agenda, agendamento para manicures</title>
   <meta name="description" content="Sistema elegante de agendamento online para manicures, com calendário, horários disponíveis e painel de gestão.">
-  <meta name="theme-color" content="#b85f67">
+  <meta name="theme-color" content="#d85f7a">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="apple-touch-icon" href="/icon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,6 +14,26 @@
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
     /* CSS da identidade visual */
+    :root {
+      --ink: #2c1716;
+      --muted: #75524d;
+      --rose-900: #8d383e;
+      --rose-700: #ba4e5f;
+      --rose-500: #e36f8a;
+      --rose-300: #f3a6b4;
+      --coral: #ff8a72;
+      --gold: #d8a23d;
+      --cream: #fff8f2;
+      --surface: rgba(255, 253, 250, 0.98);
+      --line: rgba(196, 91, 101, 0.22);
+      --radius-lg: 1.35rem;
+      --radius-md: 1rem;
+      --radius-sm: 0.78rem;
+      --shadow-soft: 0 1.4rem 3.4rem rgba(98, 39, 45, 0.13);
+      --shadow-crisp: 0 0.75rem 1.9rem rgba(112, 46, 52, 0.12);
+      --shadow-focus: 0 1rem 2.4rem rgba(211, 75, 99, 0.18);
+    }
+
     * {
       box-sizing: border-box;
     }
@@ -25,11 +45,19 @@
     body {
       margin: 0;
       min-height: 100vh;
-      color: #38211d;
+      color: var(--ink);
       font-family: "Open Sans", Arial, sans-serif;
       background:
-        radial-gradient(circle at 20% 0, rgba(221, 151, 143, 0.16), transparent 28rem),
-        linear-gradient(180deg, #fffaf7 0%, #f4e8e1 100%);
+        linear-gradient(135deg, rgba(255, 138, 114, 0.18) 0%, transparent 28%),
+        linear-gradient(225deg, rgba(227, 111, 138, 0.16) 0%, transparent 32%),
+        linear-gradient(180deg, #fff7f2 0%, #fde8e2 54%, #f2d9d0 100%);
+      text-rendering: geometricPrecision;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      color: #fff;
+      background: var(--rose-700);
     }
 
     button,
@@ -81,16 +109,16 @@
 
     .logo-script {
       margin: 0;
-      color: #b96f62;
+      color: var(--rose-700);
       font-family: "Open Sans", Arial, sans-serif;
       font-size: clamp(3.2rem, 7vw, 5.6rem);
-      font-weight: 500;
+      font-weight: 700;
       line-height: 0.9;
     }
 
     .logo-sub {
       margin: 0.55rem 0 0;
-      color: #bd7a70;
+      color: #c26a61;
       font-size: 0.78rem;
       font-weight: 600;
       letter-spacing: 0.42em;
@@ -170,30 +198,32 @@
       justify-content: space-between;
       max-width: 90rem;
       margin: 0 auto 1rem;
-      padding: 0.75rem;
-      border: 1px solid rgba(185, 111, 98, 0.14);
-      border-radius: 1.2rem;
-      background: rgba(255, 252, 249, 0.82);
-      box-shadow: 0 1rem 2.6rem rgba(82, 43, 36, 0.06);
+      padding: 0.78rem;
+      border: 1px solid rgba(216, 95, 122, 0.22);
+      border-radius: var(--radius-lg);
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.99), rgba(255, 243, 238, 0.96));
+      box-shadow: 0 1.15rem 2.9rem rgba(111, 47, 54, 0.14);
       backdrop-filter: blur(18px);
     }
 
     .mobile-logo {
       display: flex;
       flex-direction: column;
-      color: #b96f62;
+      color: var(--rose-700);
       font-family: "Open Sans", Arial, sans-serif;
-      font-size: 1.6rem;
+      font-size: 1.95rem;
+      font-weight: 800;
       line-height: 1;
     }
 
     .mobile-logo span {
       margin-top: 0.15rem;
-      color: #b9857b;
+      color: #b64e57;
       font-family: "Open Sans", Arial, sans-serif;
       font-size: 0.62rem;
-      font-weight: 600;
-      letter-spacing: 0.34em;
+      font-weight: 800;
+      letter-spacing: 0.32em;
       text-transform: uppercase;
     }
 
@@ -210,29 +240,34 @@
       align-items: center;
       justify-content: center;
       gap: 0.45rem;
-      padding: 0.72rem 1rem;
-      color: #7a453e;
-      border: 1px solid rgba(114, 69, 61, 0.16);
-      border-radius: 0.85rem;
-      background: rgba(255, 253, 250, 0.82);
+      padding: 0.74rem 1.05rem;
+      color: #7d3438;
+      border: 1px solid rgba(184, 79, 94, 0.22);
+      border-radius: var(--radius-sm);
+      background: rgba(255, 253, 250, 0.92);
       text-decoration: none;
-      transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+      font-weight: 700;
+      transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease, border 180ms ease;
     }
 
     .button:hover {
       transform: translateY(-1px);
-      box-shadow: 0 0.85rem 1.7rem rgba(125, 65, 57, 0.12);
+      box-shadow: var(--shadow-crisp);
     }
 
     .button-primary {
       color: #fff;
       border: 0;
-      background: linear-gradient(135deg, #d8788a, #b85f67);
-      box-shadow: 0 0.85rem 1.8rem rgba(197, 94, 111, 0.26);
+      background: linear-gradient(135deg, #ff8a72 0%, #e36f8a 48%, #b94658 100%);
+      box-shadow: 0 0.9rem 2rem rgba(211, 75, 99, 0.34);
+    }
+
+    .button-primary:hover {
+      box-shadow: 0 1.1rem 2.5rem rgba(211, 75, 99, 0.4);
     }
 
     .button-ghost {
-      background: rgba(255, 253, 250, 0.7);
+      background: rgba(255, 253, 250, 0.86);
     }
 
     .button-soft {
@@ -264,10 +299,10 @@
     }
 
     .card {
-      border: 1px solid rgba(95, 58, 51, 0.08);
-      border-radius: 1.2rem;
-      background: rgba(255, 253, 250, 0.94);
-      box-shadow: 0 1.4rem 3rem rgba(70, 43, 37, 0.07);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      box-shadow: var(--shadow-soft);
       backdrop-filter: blur(14px);
     }
 
@@ -297,9 +332,9 @@
     .step-card h2,
     .panel-title h1 {
       margin: 0;
-      color: #2f1c19;
+      color: var(--ink);
       font-family: "Open Sans", Arial, sans-serif;
-      font-weight: 600;
+      font-weight: 800;
       letter-spacing: 0;
     }
 
@@ -324,9 +359,9 @@
     }
 
     .field label {
-      color: #6f4039;
+      color: #7d3438;
       font-size: 0.82rem;
-      font-weight: 600;
+      font-weight: 800;
     }
 
     .input-wrap {
@@ -339,25 +374,33 @@
       left: 0.9rem;
       width: 1rem;
       height: 1rem;
-      color: #b96f62;
+      color: var(--rose-700);
       transform: translateY(-50%);
     }
 
-    input {
+    input,
+    select {
       width: 100%;
-      min-height: 3.05rem;
+      min-height: 3.18rem;
       padding: 0.8rem 0.95rem 0.8rem 2.6rem;
       color: #38211d;
-      border: 1px solid rgba(185, 111, 98, 0.24);
-      border-radius: 0.85rem;
-      background: rgba(255, 255, 255, 0.84);
+      border: 1px solid rgba(216, 95, 122, 0.22);
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.92);
       outline: none;
-      transition: border 180ms ease, box-shadow 180ms ease;
+      box-shadow: inset 0 0.08rem 0.18rem rgba(98, 39, 45, 0.04);
+      transition: border 180ms ease, box-shadow 180ms ease, background 180ms ease;
     }
 
-    input:focus {
-      border-color: #d8788a;
-      box-shadow: 0 0 0 0.25rem rgba(216, 120, 138, 0.16);
+    select {
+      appearance: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--rose-500);
+      background: #fff;
+      box-shadow: 0 0 0 0.25rem rgba(227, 111, 138, 0.18), var(--shadow-focus);
     }
 
     .notice {
@@ -408,6 +451,7 @@
     .section-title p {
       max-width: 42rem;
       margin: 0;
+      color: var(--muted);
     }
 
     .status-pill {
@@ -415,13 +459,13 @@
       width: fit-content;
       align-items: center;
       gap: 0.45rem;
-      padding: 0.45rem 0.72rem;
-      color: #925244;
-      border: 1px solid rgba(185, 111, 98, 0.2);
+      padding: 0.48rem 0.76rem;
+      color: #8f3340;
+      border: 1px solid rgba(216, 95, 122, 0.24);
       border-radius: 999px;
-      background: #fff4ef;
+      background: linear-gradient(135deg, #fff4ef, #ffe5e4);
       font-size: 0.78rem;
-      font-weight: 600;
+      font-weight: 800;
     }
 
     .progress-card {
@@ -476,6 +520,26 @@
 
     .step-card {
       padding: 1.1rem;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(255, 250, 247, 0.98));
+    }
+
+    .step-card.step-enter {
+      animation: stepEnter 360ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    }
+
+    @keyframes stepEnter {
+      from {
+        opacity: 0;
+        transform: translateY(0.75rem) scale(0.985);
+        filter: blur(0.18rem);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+      }
     }
 
     .step-header {
@@ -528,24 +592,43 @@
     }
 
     .service-card {
+      position: relative;
+      overflow: hidden;
       display: grid;
       grid-template-columns: 3rem 1fr auto;
       gap: 0.8rem;
       align-items: center;
       padding: 0.9rem;
-      border: 1px solid rgba(95, 58, 51, 0.08);
-      border-radius: 0.95rem;
-      background: rgba(255, 254, 252, 0.88);
-      box-shadow: 0 0.65rem 1.6rem rgba(76, 46, 40, 0.045);
+      border: 1px solid rgba(210, 95, 110, 0.18);
+      border-radius: var(--radius-md);
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.99), rgba(255, 248, 244, 0.95));
+      box-shadow: 0 0.7rem 1.8rem rgba(101, 45, 50, 0.075);
       transition: border 180ms ease, transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+    }
+
+    .service-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 0.22rem;
+      background: linear-gradient(180deg, var(--rose-500), var(--coral));
+      opacity: 0;
+      transition: opacity 180ms ease;
     }
 
     .service-card:hover,
     .service-card.selected {
       transform: translateY(-1px);
-      border-color: rgba(159, 83, 78, 0.22);
-      background: #fff;
-      box-shadow: 0 1rem 2.2rem rgba(82, 49, 43, 0.08);
+      border-color: rgba(216, 95, 122, 0.46);
+      background:
+        linear-gradient(135deg, #fff, #fff3ef);
+      box-shadow: 0 1rem 2.35rem rgba(139, 55, 66, 0.16);
+    }
+
+    .service-card:hover::before,
+    .service-card.selected::before {
+      opacity: 1;
     }
 
     .service-icon {
@@ -553,21 +636,28 @@
       width: 3rem;
       height: 3rem;
       place-items: center;
-      color: #a45b52;
-      border-radius: 0.85rem;
-      background: linear-gradient(180deg, rgba(255, 245, 241, 0.9), rgba(255, 250, 247, 0.9));
+      color: #b7404d;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(145deg, #fff1ef, #ffe0dc);
+      box-shadow: inset 0 0 0 1px rgba(216, 95, 122, 0.14), 0 0.6rem 1.2rem rgba(202, 89, 105, 0.14);
+    }
+
+    .service-card.selected .service-icon {
+      color: #fff;
+      background: linear-gradient(135deg, var(--coral), var(--rose-700));
+      box-shadow: 0 0.7rem 1.4rem rgba(211, 75, 99, 0.28);
     }
 
     .service-card h3 {
       margin: 0 0 0.2rem;
-      color: #2f211f;
+      color: var(--ink);
       font-size: 0.98rem;
       font-weight: 800;
     }
 
     .service-card p {
       margin: 0;
-      color: #85665f;
+      color: #76514d;
       font-size: 0.78rem;
       line-height: 1.45;
     }
@@ -577,7 +667,7 @@
       flex-wrap: wrap;
       gap: 0.5rem;
       margin-top: 0.36rem;
-      color: #865d57;
+      color: #8a3e43;
     }
 
     .mini-pill {
@@ -589,7 +679,7 @@
       border-radius: 999px;
       background: transparent;
       font-size: 0.72rem;
-      font-weight: 700;
+      font-weight: 800;
     }
 
     .service-meta .mini-pill + .mini-pill {
@@ -604,15 +694,16 @@
       width: 0.22rem;
       height: 0.22rem;
       border-radius: 50%;
-      background: rgba(134, 93, 87, 0.56);
+      background: rgba(216, 95, 122, 0.78);
       transform: translateY(-50%);
     }
 
     .calendar-card {
       overflow: hidden;
-      border: 1px solid rgba(185, 111, 98, 0.16);
-      border-radius: 1rem;
-      background: #fffaf7;
+      border: 1px solid rgba(216, 95, 122, 0.24);
+      border-radius: var(--radius-md);
+      background: #fffdfb;
+      box-shadow: 0 0.85rem 2rem rgba(107, 47, 52, 0.08);
     }
 
     .calendar-head {
@@ -620,13 +711,13 @@
       align-items: center;
       justify-content: space-between;
       padding: 0.9rem;
-      border-bottom: 1px solid rgba(185, 111, 98, 0.12);
-      background: #fff6f1;
+      border-bottom: 1px solid rgba(216, 95, 122, 0.16);
+      background: linear-gradient(135deg, #fff2ed, #ffe8e7);
     }
 
     .calendar-title {
       font-weight: 700;
-      color: #6d3832;
+      color: #742f35;
       text-transform: capitalize;
     }
 
@@ -635,10 +726,11 @@
       width: 2.45rem;
       height: 2.45rem;
       place-items: center;
-      color: #9c5148;
-      border: 1px solid rgba(95, 58, 51, 0.11);
-      border-radius: 0.75rem;
-      background: rgba(255, 253, 250, 0.78);
+      color: #a73643;
+      border: 1px solid rgba(216, 95, 122, 0.18);
+      border-radius: var(--radius-sm);
+      background: rgba(255, 253, 250, 0.92);
+      box-shadow: 0 0.45rem 1.1rem rgba(111, 47, 54, 0.08);
     }
 
     .calendar-grid {
@@ -671,8 +763,8 @@
     }
 
     .day-button.available {
-      color: #8f4b45;
-      border-color: rgba(216, 120, 138, 0.18);
+      color: #8f3340;
+      border-color: rgba(216, 95, 122, 0.22);
       background: #fff0ef;
     }
 
@@ -683,7 +775,9 @@
 
     .day-button.selected {
       color: #fff;
-      background: linear-gradient(135deg, #d8788a, #b85f67);
+      background: linear-gradient(135deg, var(--coral), var(--rose-700));
+      box-shadow: 0 0.65rem 1.35rem rgba(211, 75, 99, 0.28);
+      font-weight: 800;
     }
 
     .day-button.disabled {
@@ -710,7 +804,7 @@
       width: 0.7rem;
       height: 0.7rem;
       border-radius: 50%;
-      background: #e7a0a9;
+      background: var(--rose-500);
     }
 
     .legend-dot.off {
@@ -724,28 +818,45 @@
     }
 
     .time-button {
+      display: grid;
+      gap: 0.1rem;
       min-height: 3rem;
-      color: #984b48;
-      border: 1px solid rgba(216, 120, 138, 0.34);
-      border-radius: 0.85rem;
-      background: #fff8f5;
+      place-items: center;
+      color: #8f3340;
+      border: 1px solid rgba(216, 95, 122, 0.34);
+      border-radius: var(--radius-sm);
+      background: linear-gradient(180deg, #fffdfb, #fff4ef);
       font-weight: 700;
+      box-shadow: 0 0.45rem 1.1rem rgba(112, 46, 52, 0.07);
+    }
+
+    .time-button small {
+      color: currentColor;
+      font-size: 0.64rem;
+      font-weight: 700;
+      opacity: 0.72;
+      text-decoration: none;
     }
 
     .time-button:hover {
       background: #fff0ef;
+      box-shadow: 0 0.7rem 1.4rem rgba(112, 46, 52, 0.12);
     }
 
     .time-button.selected {
       color: #fff;
       border-color: transparent;
-      background: linear-gradient(135deg, #d8788a, #b85f67);
+      background: linear-gradient(135deg, var(--coral), var(--rose-700));
+      box-shadow: 0 0.75rem 1.5rem rgba(211, 75, 99, 0.28);
     }
 
     .time-button.busy {
       color: #b8a8a3;
       border-color: rgba(180, 160, 155, 0.16);
       background: #f6efec;
+    }
+
+    .time-button.busy span {
       text-decoration: line-through;
     }
 
@@ -757,15 +868,52 @@
       list-style: none;
     }
 
+    .confirmation-receipt {
+      position: relative;
+      overflow: hidden;
+      margin-top: 0.95rem;
+      padding: 0.95rem;
+      border: 1px solid rgba(216, 95, 122, 0.2);
+      border-radius: var(--radius-md);
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 239, 235, 0.94));
+      box-shadow: 0 0.85rem 1.9rem rgba(101, 45, 50, 0.08);
+    }
+
+    .confirmation-receipt::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 0.28rem;
+      background: linear-gradient(90deg, var(--coral), var(--rose-500), var(--gold));
+    }
+
+    .confirmation-receipt .summary-list {
+      margin: 0;
+    }
+
+    .success-card {
+      display: grid;
+      gap: 0.75rem;
+      padding: 1.1rem 0.95rem;
+      border: 1px solid rgba(216, 95, 122, 0.18);
+      border-radius: var(--radius-md);
+      background:
+        radial-gradient(circle at 50% 0, rgba(255, 138, 114, 0.18), transparent 12rem),
+        linear-gradient(180deg, #fffdfb, #fff2ef);
+      text-align: center;
+      box-shadow: 0 0.9rem 2rem rgba(101, 45, 50, 0.09);
+    }
+
     .summary-list li {
       display: flex;
       gap: 0.7rem;
       align-items: center;
       justify-content: space-between;
       padding: 0.78rem;
-      border: 1px solid rgba(185, 111, 98, 0.14);
-      border-radius: 0.85rem;
-      background: #fffaf7;
+      border: 1px solid rgba(216, 95, 122, 0.18);
+      border-radius: var(--radius-sm);
+      background: #fffdfb;
     }
 
     .summary-list span {
@@ -784,14 +932,25 @@
       place-items: center;
       margin: 0 auto 1rem;
       color: #fff;
-      border: 0.55rem solid #f7cfca;
+      border: 0.55rem solid #ffd4d5;
       border-radius: 50%;
-      background: linear-gradient(135deg, #d8788a, #9f5558);
-      box-shadow: 0 1rem 2.4rem rgba(155, 74, 84, 0.2);
+      background: linear-gradient(135deg, var(--coral), var(--rose-700));
+      box-shadow: 0 1rem 2.4rem rgba(211, 75, 99, 0.28);
     }
 
     .appointments-section {
       padding: 1.1rem;
+    }
+
+    .appointments-heading {
+      display: flex;
+      gap: 0.9rem;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    .mobile-only {
+      display: none;
     }
 
     .appointments-list {
@@ -810,9 +969,24 @@
       gap: 0.85rem;
       align-items: center;
       padding: 0.85rem;
-      border: 1px solid rgba(185, 111, 98, 0.14);
+      border: 1px solid rgba(216, 95, 122, 0.18);
       border-radius: 1rem;
-      background: #fffaf7;
+      background: #fffdfb;
+      box-shadow: 0 0.65rem 1.55rem rgba(101, 45, 50, 0.07);
+    }
+
+    .appointment-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.65rem;
+    }
+
+    .appointment-actions .button {
+      min-height: 2.35rem;
+      padding: 0.55rem 0.75rem;
+      font-size: 0.78rem;
+      font-weight: 700;
     }
 
     .date-badge {
@@ -820,9 +994,9 @@
       width: 4.25rem;
       min-height: 4.25rem;
       place-items: center;
-      color: #823f39;
+      color: #8f3340;
       border-radius: 0.95rem;
-      background: #fff0ec;
+      background: linear-gradient(145deg, #fff0ef, #ffdeda);
       text-align: center;
       font-weight: 700;
       line-height: 1.2;
@@ -845,18 +1019,18 @@
     }
 
     .status.confirmed {
-      color: #2e714d;
-      background: #eaf8ee;
+      color: #176c47;
+      background: #ddf8e8;
     }
 
     .status.cancelled {
-      color: #a0353a;
-      background: #fff0ef;
+      color: #a5202b;
+      background: #ffe5e3;
     }
 
     .status.done {
-      color: #72552a;
-      background: #fff2d7;
+      color: #7b5313;
+      background: #ffedbf;
     }
 
     .panel-screen {
@@ -879,8 +1053,9 @@
       color: #fff;
       border-radius: 1.2rem;
       background:
-        linear-gradient(160deg, rgba(67, 33, 29, 0.96), rgba(93, 52, 46, 0.94)),
+        linear-gradient(160deg, rgba(92, 34, 41, 0.98), rgba(143, 55, 66, 0.94)),
         url("https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=800&q=80") center / cover;
+      box-shadow: 0 1.15rem 2.6rem rgba(72, 23, 29, 0.22);
     }
 
     .panel-sidebar .logo-script {
@@ -930,6 +1105,9 @@
       align-items: flex-start;
       justify-content: space-between;
       padding: clamp(1rem, 2vw, 1.35rem);
+      background:
+        radial-gradient(circle at 100% 0, rgba(255, 138, 114, 0.18), transparent 16rem),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.99), rgba(255, 242, 237, 0.96));
     }
 
     .panel-title h1 {
@@ -943,24 +1121,46 @@
     }
 
     .metric {
+      position: relative;
+      overflow: hidden;
       min-height: 8.2rem;
       padding: clamp(1rem, 1.8vw, 1.35rem);
       display: grid;
       align-content: center;
+      border-color: rgba(216, 95, 122, 0.2);
+      background: linear-gradient(150deg, rgba(255, 255, 255, 0.99), rgba(255, 241, 237, 0.92));
+    }
+
+    .metric::after {
+      content: "";
+      position: absolute;
+      right: -1.8rem;
+      top: -1.8rem;
+      width: 5rem;
+      height: 5rem;
+      border-radius: 50%;
+      background: rgba(227, 111, 138, 0.12);
+      pointer-events: none;
     }
 
     .metric span {
-      color: #8d6d66;
+      color: #9b4650;
       font-size: 0.72rem;
-      font-weight: 700;
+      font-weight: 800;
       text-transform: uppercase;
     }
 
     .metric strong {
       display: block;
       margin-top: 0.35rem;
-      color: #281817;
-      font-size: clamp(1.35rem, 6vw, 2rem);
+      color: var(--ink);
+      font-size: clamp(1.45rem, 6vw, 2.1rem);
+      line-height: 1.05;
+    }
+
+    .metric small {
+      display: block;
+      margin-top: 0.35rem;
     }
 
     .panel-tools {
@@ -978,8 +1178,8 @@
     .filter-tabs button {
       min-height: 2.35rem;
       padding: 0.55rem 0.75rem;
-      color: #8a4a43;
-      border: 1px solid rgba(185, 111, 98, 0.2);
+      color: #8f3340;
+      border: 1px solid rgba(216, 95, 122, 0.24);
       border-radius: 999px;
       background: #fffaf7;
       font-weight: 700;
@@ -988,12 +1188,186 @@
     .filter-tabs button.active {
       color: #fff;
       border-color: transparent;
-      background: linear-gradient(135deg, #d8788a, #b85f67);
+      background: linear-gradient(135deg, var(--coral), var(--rose-700));
     }
 
     .table-wrap {
       overflow-x: auto;
       padding: 0.2rem;
+    }
+
+    .admin-card-list,
+    .monthly-revenue-list {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .admin-appointment-card,
+    .revenue-month-card {
+      display: grid;
+      gap: 0.78rem;
+      padding: 1rem;
+      border: 1px solid rgba(216, 95, 122, 0.18);
+      border-radius: 1rem;
+      background: #fffdfb;
+      box-shadow: 0 0.75rem 1.8rem rgba(101, 45, 50, 0.075);
+    }
+
+    .admin-appointment-card header,
+    .revenue-month-card header {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    .admin-appointment-card h3,
+    .revenue-month-card h3 {
+      margin: 0;
+      color: var(--ink);
+      font-size: 1rem;
+      line-height: 1.25;
+    }
+
+    .admin-appointment-card p,
+    .revenue-month-card p {
+      margin: 0.18rem 0 0;
+    }
+
+    .admin-card-meta,
+    .revenue-stats {
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .admin-card-meta span,
+    .revenue-stats span {
+      display: flex;
+      gap: 0.6rem;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.65rem 0.75rem;
+      color: #7a5a53;
+      border-radius: 0.85rem;
+      background: rgba(255, 239, 235, 0.86);
+      font-size: 0.84rem;
+    }
+
+    .admin-card-meta strong,
+    .revenue-stats strong {
+      color: var(--ink);
+      text-align: right;
+    }
+
+    .admin-card-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.5rem;
+    }
+
+    .admin-card-actions button {
+      display: inline-flex;
+      min-height: 2.65rem;
+      align-items: center;
+      justify-content: center;
+      gap: 0.42rem;
+      padding: 0.62rem 0.7rem;
+      color: #8f3340;
+      border: 1px solid rgba(216, 95, 122, 0.22);
+      border-radius: 0.8rem;
+      background: #fff;
+      font-weight: 700;
+    }
+
+    .admin-card-meta em,
+    .revenue-stats em {
+      color: #8f6a63;
+      font-style: normal;
+    }
+
+    .admin-card-actions button.danger-action {
+      color: #a0353a;
+      background: #fff3f2;
+    }
+
+    .revenue-month-card.current-month {
+      border-color: rgba(216, 95, 122, 0.36);
+      background: linear-gradient(180deg, #fff9f7, #ffe9e5);
+    }
+
+    .revenue-value {
+      color: var(--ink);
+      font-size: clamp(1.65rem, 7vw, 2.35rem);
+      font-weight: 800;
+      line-height: 1.05;
+    }
+
+    .revenue-open-button {
+      width: 100%;
+      min-height: 3.35rem;
+      border-radius: 1rem;
+      font-weight: 800;
+    }
+
+    .day-timeline {
+      display: grid;
+      gap: 0.55rem;
+    }
+
+    .timeline-slot {
+      display: grid;
+      grid-template-columns: 4.1rem minmax(0, 1fr);
+      gap: 0.75rem;
+      align-items: stretch;
+    }
+
+    .timeline-time {
+      display: grid;
+      place-items: center;
+      color: #8f3340;
+      border: 1px solid rgba(216, 95, 122, 0.22);
+      border-radius: 0.85rem;
+      background: linear-gradient(145deg, #fff3ef, #ffe0dc);
+      font-size: 0.82rem;
+      font-weight: 800;
+    }
+
+    .timeline-card {
+      display: grid;
+      gap: 0.28rem;
+      min-height: 3.7rem;
+      padding: 0.75rem 0.85rem;
+      border: 1px solid rgba(216, 95, 122, 0.16);
+      border-radius: 0.9rem;
+      background: #fffdfb;
+    }
+
+    .timeline-card.busy {
+      border-color: rgba(216, 95, 122, 0.28);
+      background: linear-gradient(180deg, #fff8f6, #ffe8e4);
+    }
+
+    .timeline-card.covered {
+      color: #94746e;
+      background: rgba(255, 246, 242, 0.58);
+    }
+
+    .timeline-card.available {
+      color: #7e615b;
+      border-style: dashed;
+      background: rgba(255, 253, 250, 0.82);
+    }
+
+    .timeline-card strong {
+      color: var(--ink);
+      font-size: 0.94rem;
+      line-height: 1.25;
+    }
+
+    .timeline-card span {
+      color: #80635c;
+      font-size: 0.78rem;
+      line-height: 1.35;
     }
 
     table {
@@ -1052,9 +1426,10 @@
       display: grid;
       gap: 0.55rem;
       padding: 1rem;
-      border: 1px solid rgba(185, 111, 98, 0.14);
+      border: 1px solid rgba(216, 95, 122, 0.18);
       border-radius: 1rem;
-      background: #fffaf7;
+      background: #fffdfb;
+      box-shadow: 0 0.65rem 1.55rem rgba(101, 45, 50, 0.06);
     }
 
     .client-mini-card header {
@@ -1097,8 +1472,8 @@
       padding: 0.9rem 1rem;
       color: #fff;
       border-radius: 0.95rem;
-      background: #5f3430;
-      box-shadow: 0 1rem 2.6rem rgba(46, 25, 22, 0.24);
+      background: linear-gradient(135deg, #7c3038, #b94658);
+      box-shadow: 0 1rem 2.6rem rgba(98, 39, 45, 0.28);
       line-height: 1.5;
     }
 
@@ -1107,33 +1482,42 @@
       gap: 0.5rem;
       justify-items: center;
       padding: 1.5rem;
-      color: #81635d;
-      border: 1px dashed rgba(185, 111, 98, 0.26);
+      color: #74504b;
+      border: 1px dashed rgba(216, 95, 122, 0.34);
       border-radius: 1rem;
-      background: rgba(255, 248, 245, 0.68);
+      background: rgba(255, 250, 247, 0.82);
       text-align: center;
     }
 
     @media (max-width: 679px) {
       body {
         background:
-          radial-gradient(circle at 50% 0, rgba(226, 145, 153, 0.18), transparent 18rem),
-          linear-gradient(180deg, #fff8f4 0%, #f8ebe4 100%);
+          linear-gradient(135deg, rgba(255, 138, 114, 0.2) 0%, transparent 36%),
+          linear-gradient(225deg, rgba(227, 111, 138, 0.18) 0%, transparent 38%),
+          linear-gradient(180deg, #fff6f1 0%, #f9dfd8 100%);
       }
 
       .main-area {
-        padding: 0.75rem;
+        padding: 0.72rem;
+      }
+
+      .app-shell {
+        min-height: 100svh;
       }
 
       .topbar {
+        position: sticky;
+        top: 0.55rem;
+        z-index: 10;
         max-width: 25rem;
         margin-bottom: 0.75rem;
-        padding: 0.6rem;
-        border-radius: 1rem;
+        padding: 0.64rem;
+        border-radius: 1.16rem;
+        box-shadow: 0 0.9rem 2rem rgba(111, 47, 54, 0.12);
       }
 
       .mobile-logo {
-        font-size: 1.72rem;
+        font-size: 1.92rem;
       }
 
       .mobile-logo span {
@@ -1161,7 +1545,7 @@
         min-height: min(39rem, calc(100vh - 6rem));
         gap: 1.25rem;
         padding: 2rem 1.45rem;
-        border-radius: 1.15rem;
+        border-radius: 1.25rem;
       }
 
       .login-mark {
@@ -1186,9 +1570,10 @@
       }
 
       .step-card {
-        min-height: calc(100vh - 6.7rem);
+        min-height: calc(100svh - 6.7rem);
         padding: 1.15rem;
-        border-radius: 1.1rem;
+        border-radius: 1.22rem;
+        box-shadow: 0 1rem 2.4rem rgba(98, 39, 45, 0.14);
       }
 
       .step-header {
@@ -1225,7 +1610,8 @@
       }
 
       .service-mobile-intro strong {
-        font-size: 0.98rem;
+        color: var(--ink);
+        font-size: 1.04rem;
       }
 
       .service-mobile-intro span {
@@ -1241,14 +1627,15 @@
       .service-card {
         grid-template-columns: 2.75rem minmax(0, 1fr) auto;
         gap: 0.65rem;
-        padding: 0.72rem;
-        border-radius: 0.85rem;
+        padding: 0.78rem;
+        border-radius: 0.96rem;
+        box-shadow: 0 0.65rem 1.45rem rgba(101, 45, 50, 0.09);
       }
 
       .service-icon {
         width: 2.75rem;
         height: 2.75rem;
-        border-radius: 0.75rem;
+        border-radius: 0.82rem;
       }
 
       .service-card h3 {
@@ -1284,9 +1671,17 @@
       }
 
       .appointments-section {
-        min-height: calc(100vh - 6.7rem);
+        min-height: calc(100svh - 6.7rem);
         padding: 1.15rem;
-        border-radius: 1.1rem;
+        border-radius: 1.22rem;
+      }
+
+      .appointments-heading {
+        align-items: flex-start;
+      }
+
+      .mobile-only {
+        display: inline-grid;
       }
 
       .appointments-section .section-title h2 {
@@ -1335,6 +1730,119 @@
 
       .notice {
         border-radius: 0.85rem;
+      }
+
+      .panel-screen {
+        width: min(100%, 25rem);
+      }
+
+      .panel-shell {
+        gap: 0.75rem;
+      }
+
+      .panel-sidebar {
+        position: sticky;
+        top: 0.75rem;
+        z-index: 8;
+        padding: 0.8rem;
+        border-radius: 1rem;
+      }
+
+      .panel-sidebar .logo-script,
+      .panel-sidebar .logo-sub {
+        display: none;
+      }
+
+      .panel-menu {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.5rem;
+      }
+
+      .panel-menu button {
+        min-height: 3rem;
+        justify-content: center;
+        padding: 0.68rem 0.55rem;
+        font-size: 0.82rem;
+      }
+
+      #adminLogoutButton {
+        width: 100%;
+      }
+
+      .panel-title {
+        display: grid;
+        gap: 0.85rem;
+        padding: 1rem;
+      }
+
+      .panel-title h1 {
+        font-size: 1.75rem;
+      }
+
+      .panel-title .button {
+        width: 100%;
+      }
+
+      .metrics-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.65rem;
+      }
+
+      .metric {
+        min-height: 7.4rem;
+        padding: 0.9rem;
+        border-radius: 1rem;
+      }
+
+      .metric strong {
+        font-size: clamp(1.28rem, 7vw, 1.85rem);
+      }
+
+      .panel-tools {
+        padding: 1rem;
+        border-radius: 1.05rem;
+      }
+
+      .panel-tools .step-header {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .filter-tabs {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .filter-tabs button {
+        border-radius: 0.8rem;
+      }
+
+      .table-wrap {
+        overflow: visible;
+        padding: 0;
+      }
+
+      .admin-appointment-card,
+      .revenue-month-card,
+      .client-mini-card,
+      .setting-card {
+        border-radius: 0.95rem;
+      }
+
+      .admin-appointment-card header,
+      .revenue-month-card header {
+        display: grid;
+      }
+
+      .admin-card-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .toast {
+        right: 0.75rem;
+        bottom: 0.75rem;
+        max-width: calc(100vw - 1.5rem);
       }
     }
 
@@ -1477,6 +1985,17 @@
         text-align: left;
       }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1565,9 +2084,14 @@
           </div>
 
           <section class="card appointments-section" id="clientAppointments">
-            <div class="section-title">
-              <h2>Meus agendamentos</h2>
-              <p>Seus próximos horários aparecem aqui, sempre ligados ao nome salvo neste navegador.</p>
+            <div class="appointments-heading">
+              <div class="section-title">
+                <h2>Meus agendamentos</h2>
+                <p>Seus próximos horários aparecem aqui, sempre ligados ao nome salvo neste navegador.</p>
+              </div>
+              <button class="icon-button mobile-only" id="closeClientAppointmentsButton" type="button" aria-label="Voltar para o agendamento">
+                <i data-lucide="x"></i>
+              </button>
             </div>
             <div class="appointments-list" id="clientAppointmentsList"></div>
           </section>
@@ -1616,6 +2140,24 @@
                 </div>
                 <div class="table-wrap" id="todayPreviewList"></div>
               </section>
+              <button class="button button-primary revenue-open-button" id="openMonthlyRevenueButton" type="button">
+                <i data-lucide="receipt-text"></i>
+                Ver seus faturamentos mensais
+              </button>
+            </section>
+
+            <section class="card panel-tools panel-section hidden" id="revenueSection">
+              <div class="step-header">
+                <div>
+                  <h2 style="margin: 0; font-family: 'Open Sans', Arial, sans-serif;">Faturamentos mensais</h2>
+                  <p class="muted" style="margin: 0.25rem 0 0;">Aqui ficam os resumos de cada mês para acompanhar o crescimento da agenda.</p>
+                </div>
+                <button class="button button-ghost" id="backToOverviewFromRevenueButton" type="button">
+                  <i data-lucide="arrow-left"></i>
+                  Voltar
+                </button>
+              </div>
+              <div class="monthly-revenue-list" id="monthlyRevenueList"></div>
             </section>
 
             <section class="card panel-tools panel-section hidden" id="appointmentsSection">
@@ -1683,6 +2225,51 @@
     </div>
   </div>
 
+  <div class="modal hidden" id="manualAppointmentModal" role="dialog" aria-modal="true" aria-labelledby="manualAppointmentTitle">
+    <div class="card modal-card">
+      <span class="icon-bubble" style="margin: 0 auto;"><i data-lucide="calendar-plus"></i></span>
+      <div>
+        <h2 id="manualAppointmentTitle" style="margin: 0; font-family: 'Open Sans', Arial, sans-serif;">Novo agendamento</h2>
+        <p class="muted" style="margin: 0.4rem 0 0;">Cadastre um horário que chegou pelo WhatsApp ou presencialmente.</p>
+      </div>
+      <form id="manualAppointmentForm">
+        <div class="field">
+          <label for="manualClientNameInput">Nome da cliente</label>
+          <div class="input-wrap">
+            <i data-lucide="user-round"></i>
+            <input id="manualClientNameInput" autocomplete="name" placeholder="Digite o nome" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="manualServiceSelect">Serviço</label>
+          <div class="input-wrap">
+            <i data-lucide="sparkles"></i>
+            <select id="manualServiceSelect" required></select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="manualDateInput">Data</label>
+          <div class="input-wrap">
+            <i data-lucide="calendar-days"></i>
+            <input id="manualDateInput" type="date" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="manualTimeSelect">Horário</label>
+          <div class="input-wrap">
+            <i data-lucide="clock"></i>
+            <select id="manualTimeSelect" required></select>
+          </div>
+        </div>
+        <button class="button button-primary" type="submit" style="width: 100%; margin-top: 1rem;">
+          <i data-lucide="check"></i>
+          Salvar agendamento
+        </button>
+      </form>
+      <button class="button button-ghost" id="closeManualAppointmentModalButton" type="button">Voltar</button>
+    </div>
+  </div>
+
   <div class="toast hidden" id="toast"></div>
 
   <script type="module">
@@ -1732,6 +2319,7 @@
 
     // Estado da aplicação
     const CLIENT_NAME_KEY = "nailAgenda_clientName";
+    const BUSINESS_END_TIME = "18:00";
     const steps = ["Serviço", "Dia", "Horário", "Confirmação"];
     const times = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00"];
     const services = [
@@ -1750,6 +2338,7 @@
       selectedTime: "",
       calendarDate: new Date(),
       bookedTimes: new Set(),
+      bookedAppointments: [],
       clientAppointments: [],
       adminAppointments: [],
       adminSection: "overview",
@@ -1774,35 +2363,49 @@
       stepProgress: document.querySelector("#stepProgress"),
       stepContent: document.querySelector("#stepContent"),
       supportContent: document.querySelector("#supportContent"),
+      clientAppointments: document.querySelector("#clientAppointments"),
+      closeClientAppointmentsButton: document.querySelector("#closeClientAppointmentsButton"),
       clientAppointmentsList: document.querySelector("#clientAppointmentsList"),
       panelAccessButton: document.querySelector("#panelAccessButton"),
       pinModal: document.querySelector("#pinModal"),
       pinForm: document.querySelector("#pinForm"),
       pinInput: document.querySelector("#pinInput"),
       closePinModalButton: document.querySelector("#closePinModalButton"),
+      manualAppointmentModal: document.querySelector("#manualAppointmentModal"),
+      manualAppointmentForm: document.querySelector("#manualAppointmentForm"),
+      manualClientNameInput: document.querySelector("#manualClientNameInput"),
+      manualServiceSelect: document.querySelector("#manualServiceSelect"),
+      manualDateInput: document.querySelector("#manualDateInput"),
+      manualTimeSelect: document.querySelector("#manualTimeSelect"),
+      closeManualAppointmentModalButton: document.querySelector("#closeManualAppointmentModalButton"),
       clientView: document.querySelector("#clientView"),
       adminView: document.querySelector("#adminView"),
       backToClientButton: document.querySelector("#backToClientButton"),
       adminLogoutButton: document.querySelector("#adminLogoutButton"),
       adminMenuButtons: document.querySelectorAll("[data-admin-section]"),
       overviewSection: document.querySelector("#overviewSection"),
+      revenueSection: document.querySelector("#revenueSection"),
       appointmentsSection: document.querySelector("#appointmentsSection"),
       clientsSection: document.querySelector("#clientsSection"),
       settingsSection: document.querySelector("#settingsSection"),
       metricsGrid: document.querySelector("#metricsGrid"),
       todayPreviewList: document.querySelector("#todayPreviewList"),
+      monthlyRevenueList: document.querySelector("#monthlyRevenueList"),
       filterTabs: document.querySelector("#filterTabs"),
       adminSearchInput: document.querySelector("#adminSearchInput"),
       adminAppointmentsList: document.querySelector("#adminAppointmentsList"),
       adminClientsList: document.querySelector("#adminClientsList"),
       adminSettingsList: document.querySelector("#adminSettingsList"),
       newClientBookingButton: document.querySelector("#newClientBookingButton"),
+      openMonthlyRevenueButton: document.querySelector("#openMonthlyRevenueButton"),
+      backToOverviewFromRevenueButton: document.querySelector("#backToOverviewFromRevenueButton"),
       toast: document.querySelector("#toast")
     };
 
     // Funções utilitárias
     const money = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
     const monthFormatter = new Intl.DateTimeFormat("pt-BR", { month: "long", year: "numeric" });
+    const compactMonthFormatter = new Intl.DateTimeFormat("pt-BR", { month: "long", year: "numeric" });
     const longDateFormatter = new Intl.DateTimeFormat("pt-BR", { weekday: "long", day: "2-digit", month: "long" });
 
     function startOfToday() {
@@ -1835,9 +2438,80 @@
       return slot <= now;
     }
 
+    function timeToMinutes(time) {
+      const [hour, minute] = time.split(":").map(Number);
+      return hour * 60 + minute;
+    }
+
+    function getServiceDuration(service) {
+      return Number(service?.duration || 30);
+    }
+
+    function appointmentsOverlap(startA, endA, startB, endB) {
+      return startA < endB && endA > startB;
+    }
+
+    function getAppointmentInterval(appointment) {
+      const start = timeToMinutes(appointment.time);
+      const duration = Number(appointment.serviceDuration || services.find(service => service.id === appointment.serviceId)?.duration || 30);
+      return { start, end: start + duration };
+    }
+
+    function getSlotEndMinutes(time, service = state.selectedService) {
+      return timeToMinutes(time) + getServiceDuration(service);
+    }
+
+    function getBlockingAppointment(time, service = state.selectedService) {
+      const start = timeToMinutes(time);
+      const end = getSlotEndMinutes(time, service);
+
+      return state.bookedAppointments.find(appointment => {
+        const interval = getAppointmentInterval(appointment);
+        return appointmentsOverlap(start, end, interval.start, interval.end);
+      });
+    }
+
+    function isPastBusinessEnd(time, service = state.selectedService) {
+      return getSlotEndMinutes(time, service) > timeToMinutes(BUSINESS_END_TIME);
+    }
+
+    function isSlotUnavailable(time, service = state.selectedService) {
+      return Boolean(getBlockingAppointment(time, service)) || isPastBusinessEnd(time, service);
+    }
+
+    function getAppointmentStartingAt(items, time) {
+      return items.find(item => item.time === time);
+    }
+
+    function getAppointmentCoveringTime(items, time) {
+      const minute = timeToMinutes(time);
+      return items.find(item => {
+        const interval = getAppointmentInterval(item);
+        return minute > interval.start && minute < interval.end;
+      });
+    }
+
     function formatFriendlyDate(key) {
       if (!key) return "";
       return longDateFormatter.format(fromDateKey(key));
+    }
+
+    function buildRescheduleMessage(appointment) {
+      return `Oi! Eu gostaria de falar sobre meu agendamento de ${appointment.serviceName}, marcado para ${formatFriendlyDate(appointment.date)} às ${appointment.time}.`;
+    }
+
+    function getMonthKey(dateKey) {
+      return dateKey ? dateKey.slice(0, 7) : "";
+    }
+
+    function formatMonthLabel(monthKey) {
+      if (!monthKey) return "";
+      const [year, month] = monthKey.split("-").map(Number);
+      return compactMonthFormatter.format(new Date(year, month - 1, 1));
+    }
+
+    function isRevenueAppointment(item) {
+      return item?.date && item.status !== "cancelled";
     }
 
     function getStatusLabel(status) {
@@ -2007,10 +2681,28 @@
 
       el.backToClientButton.addEventListener("click", showBooking);
       el.adminLogoutButton.addEventListener("click", showBooking);
-      el.newClientBookingButton.addEventListener("click", () => {
-        showBooking();
-        state.step = 1;
-        renderBooking();
+      el.closeClientAppointmentsButton?.addEventListener("click", () => {
+        el.clientAppointments?.classList.remove("appointments-open");
+        el.stepContent?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      el.newClientBookingButton.addEventListener("click", openManualAppointmentModal);
+      el.closeManualAppointmentModalButton?.addEventListener("click", () => {
+        el.manualAppointmentModal.classList.add("hidden");
+      });
+      el.manualAppointmentForm?.addEventListener("submit", handleManualAppointmentSubmit);
+      el.manualServiceSelect?.addEventListener("change", updateManualTimeOptions);
+      el.manualDateInput?.addEventListener("change", updateManualTimeOptions);
+
+      el.openMonthlyRevenueButton?.addEventListener("click", () => {
+        state.adminSection = "revenue";
+        renderAdmin();
+        el.revenueSection?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      el.backToOverviewFromRevenueButton?.addEventListener("click", () => {
+        state.adminSection = "overview";
+        renderAdmin();
       });
 
       el.adminSearchInput.addEventListener("input", event => {
@@ -2059,8 +2751,17 @@
       if (state.step === 3) renderTimeStep();
       if (state.step === 4) renderConfirmationStep();
 
+      animateStepTransition();
       renderSupport();
       refreshIcons();
+    }
+
+    function animateStepTransition() {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      el.stepContent.classList.remove("step-enter");
+      void el.stepContent.offsetWidth;
+      el.stepContent.classList.add("step-enter");
     }
 
     function renderProgress() {
@@ -2078,6 +2779,7 @@
 
     // Funções de serviços
     function renderServiceStep() {
+      el.clientAppointments?.classList.remove("appointments-open");
       el.stepContent.innerHTML = `
         <div class="step-header service-desktop-intro">
           <div>
@@ -2210,8 +2912,9 @@
     }
 
     // Funções de agendamento
-    async function loadBookedTimes(dateKey) {
+    async function loadBookedTimes(dateKey, service = state.selectedService) {
       state.bookedTimes = new Set();
+      state.bookedAppointments = [];
       if (!db) return;
 
       try {
@@ -2219,8 +2922,14 @@
         const snapshot = await getDocs(bookedQuery);
         snapshot.forEach(item => {
           const data = item.data();
-          if (data.status === "confirmed") {
-            state.bookedTimes.add(data.time);
+          if (data.status !== "cancelled") {
+            state.bookedAppointments.push({ id: item.id, ...data });
+          }
+        });
+
+        times.forEach(time => {
+          if (isSlotUnavailable(time, service)) {
+            state.bookedTimes.add(time);
           }
         });
       } catch (error) {
@@ -2243,13 +2952,17 @@
         </div>
         <div class="times-grid">
           ${times.map(time => {
-            const busy = state.bookedTimes.has(time);
+            const blockingAppointment = getBlockingAppointment(time);
+            const busy = Boolean(blockingAppointment);
+            const outsideHours = isPastBusinessEnd(time);
             const past = isPastTimeForDate(state.selectedDate, time);
-            const unavailable = busy || past;
+            const unavailable = busy || past || outsideHours;
             const selected = state.selectedTime === time;
+            const unavailableLabel = busy ? "Reservado" : past ? "Passou" : "Encerrado";
             return `
               <button class="time-button ${unavailable ? "busy" : ""} ${selected ? "selected" : ""}" type="button" ${unavailable ? "disabled" : ""} data-time="${time}">
-                ${time}
+                <span>${time}</span>
+                ${unavailable ? `<small>${unavailableLabel}</small>` : ""}
               </button>
             `;
           }).join("")}
@@ -2283,13 +2996,15 @@
             Horário
           </button>
         </div>
-        <ul class="summary-list">
-          <li><span>Cliente</span><strong>${state.clientName}</strong></li>
-          <li><span>Serviço</span><strong>${state.selectedService.name}</strong></li>
-          <li><span>Data</span><strong>${formatFriendlyDate(state.selectedDate)}</strong></li>
-          <li><span>Horário</span><strong>${state.selectedTime}</strong></li>
-          <li><span>Valor</span><strong>${money.format(state.selectedService.price)}</strong></li>
-        </ul>
+        <div class="confirmation-receipt">
+          <ul class="summary-list">
+            <li><span>Cliente</span><strong>${state.clientName}</strong></li>
+            <li><span>Serviço</span><strong>${state.selectedService.name}</strong></li>
+            <li><span>Data</span><strong>${formatFriendlyDate(state.selectedDate)}</strong></li>
+            <li><span>Horário</span><strong>${state.selectedTime}</strong></li>
+            <li><span>Valor</span><strong>${money.format(state.selectedService.price)}</strong></li>
+          </ul>
+        </div>
         <button class="button button-primary" id="confirmAppointmentButton" type="button" style="width: 100%;">
           <i data-lucide="check"></i>
           Confirmar agendamento
@@ -2315,10 +3030,17 @@
           return;
         }
 
-        if (state.bookedTimes.has(state.selectedTime)) {
+        if (isPastBusinessEnd(state.selectedTime, state.selectedService)) {
           state.step = 3;
           renderBooking();
-          showToast("Esse horário acabou de ser reservado. Escolha outro com carinho.");
+          showToast("Esse serviço precisa de mais tempo do que resta neste dia. Escolha um horário mais cedo.");
+          return;
+        }
+
+        if (getBlockingAppointment(state.selectedTime, state.selectedService)) {
+          state.step = 3;
+          renderBooking();
+          showToast("Esse horário conflita com outro atendimento. Escolha outro com carinho.");
           return;
         }
 
@@ -2368,20 +3090,26 @@
       `).join("");
 
       el.stepContent.innerHTML = `
-        <div style="text-align: center;">
+        <div class="success-card">
           <div class="success-mark"><i data-lucide="check"></i></div>
           <h2>Tudo certo, ${state.clientName}!</h2>
           <p class="muted">Seu horário foi reservado com carinho.</p>
         </div>
-        <ul class="summary-list">
-          <li><span>Serviço</span><strong>${state.selectedService.name}</strong></li>
-          <li><span>Data</span><strong>${formatFriendlyDate(state.selectedDate)}</strong></li>
-          <li><span>Horário</span><strong>${state.selectedTime}</strong></li>
-          <li><span>Valor</span><strong>${money.format(state.selectedService.price)}</strong></li>
-        </ul>
+        <div class="confirmation-receipt">
+          <ul class="summary-list">
+            <li><span>Serviço</span><strong>${state.selectedService.name}</strong></li>
+            <li><span>Data</span><strong>${formatFriendlyDate(state.selectedDate)}</strong></li>
+            <li><span>Horário</span><strong>${state.selectedTime}</strong></li>
+            <li><span>Valor</span><strong>${money.format(state.selectedService.price)}</strong></li>
+          </ul>
+        </div>
         <button class="button button-primary" type="button" id="restartBookingButton" style="width: 100%;">
           <i data-lucide="calendar-plus"></i>
           Fazer outro agendamento
+        </button>
+        <button class="button button-ghost" type="button" id="openAppointmentsAfterSuccessButton" style="width: 100%; margin-top: 0.7rem;">
+          <i data-lucide="calendar-heart"></i>
+          Ver meus agendamentos
         </button>
       `;
 
@@ -2393,6 +3121,13 @@
         renderBooking();
       });
 
+      el.stepContent.querySelector("#openAppointmentsAfterSuccessButton").addEventListener("click", async () => {
+        await loadClientAppointments();
+        el.clientAppointments?.classList.add("appointments-open");
+        el.clientAppointments?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      animateStepTransition();
       renderSupport();
       refreshIcons();
     }
@@ -2494,11 +3229,127 @@
               <strong>${appointment.time} · ${appointment.serviceName}</strong>
               <p class="muted" style="margin: 0.25rem 0;">${formatFriendlyDate(appointment.date)}</p>
               <span class="status ${appointment.status}">${getStatusLabel(appointment.status)}</span>
+              <div class="appointment-actions">
+                <a class="button button-ghost" href="https://wa.me/?text=${encodeURIComponent(buildRescheduleMessage(appointment))}" target="_blank" rel="noopener">
+                  <i data-lucide="message-circle"></i>
+                  Falar no WhatsApp
+                </a>
+              </div>
             </div>
           </article>
         `;
       }).join("");
       refreshIcons();
+    }
+
+    function openManualAppointmentModal() {
+      if (!db) {
+        showToast("Configure o Firebase para cadastrar agendamentos pelo painel.");
+        return;
+      }
+
+      el.manualAppointmentForm.reset();
+      el.manualServiceSelect.innerHTML = services.map(service => `
+        <option value="${service.id}">${service.name} · ${money.format(service.price)} · ${service.duration} min</option>
+      `).join("");
+
+      const todayKey = toDateKey(startOfToday());
+      el.manualDateInput.min = todayKey;
+      el.manualDateInput.value = todayKey;
+      el.manualAppointmentModal.classList.remove("hidden");
+      updateManualTimeOptions();
+      window.setTimeout(() => el.manualClientNameInput.focus(), 80);
+      refreshIcons();
+    }
+
+    async function updateManualTimeOptions() {
+      if (!el.manualDateInput.value || !el.manualServiceSelect.value) return;
+
+      const service = services.find(item => item.id === el.manualServiceSelect.value);
+      await loadBookedTimes(el.manualDateInput.value, service);
+
+      el.manualTimeSelect.innerHTML = times.map(time => {
+        const busy = Boolean(getBlockingAppointment(time, service));
+        const past = isPastTimeForDate(el.manualDateInput.value, time);
+        const outsideHours = isPastBusinessEnd(time, service);
+        const unavailable = busy || past || outsideHours;
+        const label = busy ? "reservado" : past ? "passou" : outsideHours ? "sem tempo" : "livre";
+
+        return `
+          <option value="${time}" ${unavailable ? "disabled" : ""}>
+            ${time} · ${label}
+          </option>
+        `;
+      }).join("");
+
+      const firstAvailable = Array.from(el.manualTimeSelect.options).find(option => !option.disabled);
+      if (firstAvailable) {
+        el.manualTimeSelect.value = firstAvailable.value;
+      }
+    }
+
+    async function handleManualAppointmentSubmit(event) {
+      event.preventDefault();
+
+      if (!db) {
+        showToast("Configure o Firebase para salvar agendamentos pelo painel.");
+        return;
+      }
+
+      const clientName = el.manualClientNameInput.value.trim();
+      const service = services.find(item => item.id === el.manualServiceSelect.value);
+      const date = el.manualDateInput.value;
+      const time = el.manualTimeSelect.value;
+
+      if (!clientName || !service || !date || !time) {
+        showToast("Preencha nome, serviço, data e horário para salvar.");
+        return;
+      }
+
+      await loadBookedTimes(date, service);
+
+      if (isPastTimeForDate(date, time)) {
+        showToast("Esse horário já passou. Escolha um horário futuro.");
+        updateManualTimeOptions();
+        return;
+      }
+
+      if (isPastBusinessEnd(time, service)) {
+        showToast("Esse serviço precisa de mais tempo do que resta neste dia.");
+        updateManualTimeOptions();
+        return;
+      }
+
+      if (getBlockingAppointment(time, service)) {
+        showToast("Esse horário conflita com outro atendimento.");
+        updateManualTimeOptions();
+        return;
+      }
+
+      try {
+        await addDoc(collection(db, "appointments"), {
+          clientName,
+          serviceId: service.id,
+          serviceName: service.name,
+          servicePrice: service.price,
+          serviceDuration: service.duration,
+          date,
+          time,
+          status: "confirmed",
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+          source: "admin_panel"
+        });
+
+        el.manualAppointmentModal.classList.add("hidden");
+        state.adminSection = "appointments";
+        state.adminFilter = date === toDateKey(startOfToday()) ? "today" : "all";
+        renderAdmin();
+        showToast("Agendamento cadastrado com sucesso.");
+      } catch (error) {
+        console.error(error);
+        showToast("Não foi possível salvar o agendamento manual.");
+      }
     }
 
     // Funções do painel da manicure
@@ -2535,6 +3386,7 @@
       renderAdminSections();
       renderMetrics();
       renderTodayPreview();
+      renderMonthlyRevenueHistory();
       renderFilters();
       renderAdminAppointments();
       renderAdminClients();
@@ -2551,6 +3403,7 @@
     function renderAdminSections() {
       const sections = {
         overview: el.overviewSection,
+        revenue: el.revenueSection,
         appointments: el.appointmentsSection,
         clients: el.clientsSection,
         settings: el.settingsSection
@@ -2585,12 +3438,13 @@
       const month = filterByPeriodWithKey("month").filter(item => item.status !== "cancelled");
       const clients = new Set(state.adminAppointments.filter(item => item.status !== "cancelled").map(item => item.clientName.toLowerCase()));
       const revenue = month.reduce((sum, item) => sum + Number(item.servicePrice || 0), 0);
+      const currentMonthLabel = formatMonthLabel(getMonthKey(todayKey));
 
       const metrics = [
         { label: "Hoje", value: today.length, detail: "agendamentos" },
         { label: "Esta semana", value: week.length, detail: "agendamentos" },
         { label: "Clientes", value: clients.size, detail: "agendadas" },
-        { label: "Faturamento", value: money.format(revenue), detail: "este mês" }
+        { label: "Faturamento do mês", value: money.format(revenue), detail: currentMonthLabel }
       ];
 
       el.metricsGrid.innerHTML = metrics.map(metric => `
@@ -2600,6 +3454,84 @@
           <small class="muted">${metric.detail}</small>
         </article>
       `).join("");
+    }
+
+    function renderMonthlyRevenueHistory() {
+      if (!db) {
+        el.monthlyRevenueList.innerHTML = `
+          <div class="empty-state">
+            <i data-lucide="cloud-off"></i>
+            <strong>Firebase ainda não configurado</strong>
+            <span>Quando os agendamentos forem salvos, o faturamento mensal aparecerá aqui.</span>
+          </div>
+        `;
+        return;
+      }
+
+      const months = new Map();
+      state.adminAppointments
+        .filter(isRevenueAppointment)
+        .forEach(item => {
+          const monthKey = getMonthKey(item.date);
+          const current = months.get(monthKey) || {
+            key: monthKey,
+            revenue: 0,
+            count: 0,
+            services: new Map()
+          };
+
+          current.revenue += Number(item.servicePrice || 0);
+          current.count += 1;
+          current.services.set(item.serviceName, (current.services.get(item.serviceName) || 0) + 1);
+          months.set(monthKey, current);
+        });
+
+      const currentMonthKey = getMonthKey(toDateKey(startOfToday()));
+      if (!months.has(currentMonthKey)) {
+        months.set(currentMonthKey, {
+          key: currentMonthKey,
+          revenue: 0,
+          count: 0,
+          services: new Map()
+        });
+      }
+
+      const list = Array.from(months.values()).sort((a, b) => b.key.localeCompare(a.key));
+
+      if (!list.length) {
+        el.monthlyRevenueList.innerHTML = `
+          <div class="empty-state">
+            <i data-lucide="receipt-text"></i>
+            <strong>Nenhum faturamento registrado ainda</strong>
+            <span>Quando uma cliente confirmar horário, o mês começa a aparecer aqui.</span>
+          </div>
+        `;
+        return;
+      }
+
+      el.monthlyRevenueList.innerHTML = list.map(month => {
+        const topService = Array.from(month.services.entries()).sort((a, b) => b[1] - a[1])[0];
+        const label = formatMonthLabel(month.key);
+        const isCurrent = month.key === currentMonthKey;
+        const serviceText = topService ? `${topService[0]} foi o serviço mais reservado` : "Ainda sem serviço reservado neste mês";
+
+        return `
+          <article class="revenue-month-card ${isCurrent ? "current-month" : ""}">
+            <header>
+              <div>
+                <h3>${isCurrent ? "Este mês" : label}</h3>
+                <p class="muted">${isCurrent ? `Faturamento de ${label}` : `Em ${label}, você fez`}</p>
+              </div>
+              <span class="status-pill">${month.count} horário${month.count === 1 ? "" : "s"}</span>
+            </header>
+            <div class="revenue-value">${money.format(month.revenue)}</div>
+            <div class="revenue-stats">
+              <span><em>Agendamentos válidos</em><strong>${month.count}</strong></span>
+              <span><em>Destaque do mês</em><strong>${serviceText}</strong></span>
+            </div>
+          </article>
+        `;
+      }).join("");
     }
 
     function renderTodayPreview() {
@@ -2631,26 +3563,47 @@
       }
 
       el.todayPreviewList.innerHTML = `
-        <table>
-          <thead>
-            <tr>
-              <th>Horário</th>
-              <th>Cliente</th>
-              <th>Serviço</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${todayItems.map(item => `
-              <tr>
-                <td>${item.time}</td>
-                <td>${item.clientName}</td>
-                <td>${item.serviceName}</td>
-                <td><span class="status ${item.status}">${getStatusLabel(item.status)}</span></td>
-              </tr>
-            `).join("")}
-          </tbody>
-        </table>
+        <div class="day-timeline">
+          ${times.map(time => {
+            const appointment = getAppointmentStartingAt(todayItems, time);
+            const covering = !appointment ? getAppointmentCoveringTime(todayItems, time) : null;
+
+            if (appointment) {
+              return `
+                <article class="timeline-slot">
+                  <div class="timeline-time">${time}</div>
+                  <div class="timeline-card busy">
+                    <strong>${appointment.clientName}</strong>
+                    <span>${appointment.serviceName} · ${money.format(Number(appointment.servicePrice || 0))}</span>
+                    <span>${appointment.serviceDuration || "-"} min · ${getStatusLabel(appointment.status)}</span>
+                  </div>
+                </article>
+              `;
+            }
+
+            if (covering) {
+              return `
+                <article class="timeline-slot">
+                  <div class="timeline-time">${time}</div>
+                  <div class="timeline-card covered">
+                    <strong>Ocupado</strong>
+                    <span>Continuação de ${covering.serviceName} com ${covering.clientName}</span>
+                  </div>
+                </article>
+              `;
+            }
+
+            return `
+              <article class="timeline-slot">
+                <div class="timeline-time">${time}</div>
+                <div class="timeline-card available">
+                  <strong>Horário livre</strong>
+                  <span>Disponível para encaixe ou nova reserva.</span>
+                </div>
+              </article>
+            `;
+          }).join("")}
+        </div>
       `;
     }
 
@@ -2714,39 +3667,30 @@
       }
 
       el.adminAppointmentsList.innerHTML = `
-        <table>
-          <thead>
-            <tr>
-              <th>Horário</th>
-              <th>Data</th>
-              <th>Cliente</th>
-              <th>Serviço</th>
-              <th>Valor</th>
-              <th>Status</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${filtered.map(item => `
-              <tr>
-                <td>${item.time}</td>
-                <td>${formatFriendlyDate(item.date)}</td>
-                <td>${item.clientName}</td>
-                <td>${item.serviceName}</td>
-                <td>${money.format(Number(item.servicePrice || 0))}</td>
-                <td><span class="status ${item.status}">${getStatusLabel(item.status)}</span></td>
-                <td>
-                  <div class="actions">
-                    <button type="button" title="Confirmar" data-action="confirmed" data-id="${item.id}"><i data-lucide="check"></i></button>
-                    <button type="button" title="Cancelar" data-action="cancelled" data-id="${item.id}"><i data-lucide="x"></i></button>
-                    <button type="button" title="Concluir" data-action="done" data-id="${item.id}"><i data-lucide="badge-check"></i></button>
-                    <button type="button" title="Excluir" data-action="delete" data-id="${item.id}"><i data-lucide="trash-2"></i></button>
-                  </div>
-                </td>
-              </tr>
-            `).join("")}
-          </tbody>
-        </table>
+        <div class="admin-card-list">
+          ${filtered.map(item => `
+            <article class="admin-appointment-card">
+              <header>
+                <div>
+                  <h3>${item.time} · ${item.clientName}</h3>
+                  <p class="muted">${formatFriendlyDate(item.date)}</p>
+                </div>
+                <span class="status ${item.status}">${getStatusLabel(item.status)}</span>
+              </header>
+              <div class="admin-card-meta">
+                <span><em>Serviço</em><strong>${item.serviceName}</strong></span>
+                <span><em>Valor</em><strong>${money.format(Number(item.servicePrice || 0))}</strong></span>
+                <span><em>Duração</em><strong>${item.serviceDuration || "-"} min</strong></span>
+              </div>
+              <div class="admin-card-actions">
+                <button type="button" data-action="confirmed" data-id="${item.id}"><i data-lucide="check"></i> Confirmar</button>
+                <button type="button" data-action="done" data-id="${item.id}"><i data-lucide="badge-check"></i> Concluir</button>
+                <button class="danger-action" type="button" data-action="cancelled" data-id="${item.id}"><i data-lucide="x"></i> Cancelar</button>
+                <button class="danger-action" type="button" data-action="delete" data-id="${item.id}"><i data-lucide="trash-2"></i> Excluir</button>
+              </div>
+            </article>
+          `).join("")}
+        </div>
       `;
 
       el.adminAppointmentsList.querySelectorAll("[data-action]").forEach(button => {
